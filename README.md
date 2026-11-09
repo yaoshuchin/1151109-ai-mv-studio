@@ -68,6 +68,33 @@
 
 ---
 
+## 🎨 10/31 Moonland x 劇情式影音創作實戰工作坊資源專區
+
+本專案深度整合 [10/31 Moonland x 劇情式影音創作實戰工作坊 (Padlet)](https://padlet.com/qianyikeji1/10-31-moonland-x-s025a2sh1f98in2ada3v) 之研習資源與神奕教育精進研習精華：
+
+### 🛠️ 工作坊推薦影音 AI 工具鏈
+* **故事影片創作平台**：[Moonland.ai](https://moonland.ai/)（AI 劇情短片生成）
+* **AI 劇本與提示詞對話範例**：[Google Gemini 課堂實戰共享](https://share.gemini.google/5c1CkmDw6mVi)
+* **AI 語音合成 (TTS)**：
+  - [絕好聲創 (VOAI)](https://www.voai.ai/)：高擬真情緒配音
+  - [雅婷智慧 (Yating Studio)](https://studio.yating.tw/)：台灣在地口音與自然台語 TTS
+  - [TTSMaker](https://ttsmaker.com/)：免費多國語言語音合成
+* **剪輯與美學資源**：
+  - [Microsoft Clipchamp](https://clipchamp.com/en/)：微軟輕量多軌道影片剪輯
+  - [頂尖日本插畫家風格圖鑑](https://macrobruce.github.io/japan2026-style-atlas/)：名家美學提示詞庫
+  - [AIGEM 感性影音創作島](https://aigem-anime-island.pages.dev)
+  - [神奕教育精進研習群 LINE (密碼 0800)](https://padlet.com/qianyikeji1/10-31-moonland-x-s025a2sh1f98in2ada3v) / [宏布斯 Bruce OPENCHAT (密碼 1972)](https://www.facebook.com/groups/macrobruce)
+
+### 🎬 工作坊經典實戰劇本（支援網頁一鍵載入分鏡）
+1. **《平溪鐵道與雨中流浪貓》**：45 秒新海誠光影動畫，高中少女與三花流浪貓在平溪老街屋簷下的溫暖療癒相遇。
+2. **《星夜迴廊～石虎的光之守護》**：30 秒生態守護微短片，巡山員少年夜間破除陷阱救護台灣石虎幼崽。
+3. **《冰淵的星光》**：60 秒極致光影，水下流體失重感與極光無垠星空碰撞。
+4. **《森林最後的心跳》**：SDGs 13/15 氣候行動與陸域生態復育微電影。
+5. **《勤洗手身體棒》**：巧虎卡通風格 60 秒幼教衛教短片。
+6. **研習影音成果展示**：收錄 [《石虎的光之守護》YouTube 影片](https://www.youtube.com/watch?v=GNBsHODfQzM)、[《一起散步》Shorts](https://youtube.com/shorts/7D_edtYizsI) 與 [學員作品集清單](https://www.youtube.com/watch?v=UYfVXgxk-Hw&list=PLnzEelf3mgWMUhXNo_zpcTwVUneRHnf7M)。
+
+---
+
 ## 🚀 如何開啟使用？
 
 您可以直接以任何現代瀏覽器開啟：

@@ -183,14 +183,16 @@ function switchViewMode(mode) {
   const promptsContainer = document.getElementById('view-prompts-container');
   const storyboardContainer = document.getElementById('view-storyboard-container');
   const curriculumContainer = document.getElementById('view-curriculum-container');
+  const workshopContainer = document.getElementById('view-workshop-container');
 
   const btnSteps = document.getElementById('view-mode-steps');
   const btnPrompts = document.getElementById('view-mode-prompts');
   const btnStoryboard = document.getElementById('view-mode-storyboard');
   const btnCurriculum = document.getElementById('view-mode-curriculum');
+  const btnWorkshop = document.getElementById('view-mode-workshop');
 
   // Reset active classes
-  [btnSteps, btnPrompts, btnStoryboard, btnCurriculum].forEach(b => {
+  [btnSteps, btnPrompts, btnStoryboard, btnCurriculum, btnWorkshop].forEach(b => {
     if (b) {
       b.className = "px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center space-x-1";
     }
@@ -200,6 +202,7 @@ function switchViewMode(mode) {
   promptsContainer.classList.add('hidden');
   storyboardContainer.classList.add('hidden');
   if (curriculumContainer) curriculumContainer.classList.add('hidden');
+  if (workshopContainer) workshopContainer.classList.add('hidden');
 
   if (mode === 'steps') {
     stepsContainer.classList.remove('hidden');
@@ -213,6 +216,9 @@ function switchViewMode(mode) {
   } else if (mode === 'curriculum') {
     if (curriculumContainer) curriculumContainer.classList.remove('hidden');
     if (btnCurriculum) btnCurriculum.className = "px-3 py-1.5 rounded-md transition-all bg-indigo-600 text-white shadow-sm flex items-center space-x-1";
+  } else if (mode === 'workshop') {
+    if (workshopContainer) workshopContainer.classList.remove('hidden');
+    if (btnWorkshop) btnWorkshop.className = "px-3 py-1.5 rounded-md transition-all bg-purple-600 text-white shadow-sm flex items-center space-x-1";
   }
 
   window.scrollTo({ top: 120, behavior: 'smooth' });
@@ -1044,4 +1050,188 @@ function loadDemoData() {
   updateStepProgress(1);
 
   showToast('已成功載入「草地上的約定」講師範例專案！');
+}
+
+// ====================================================
+// PADLET WORKSHOP SCENARIO LOADERS
+// ====================================================
+
+function loadPadletCatDemo() {
+  document.getElementById('project-story-synopsis').value = '方案 A【平溪鐵道與雨中流浪貓】：總是帶著升學焦慮的高中少女，在放學後滂沱的平溪老街躲雨，偶遇一隻在柑仔店屋簷下避雨的三花貓。兩人在雨聲、平溪支線柴油列車低鳴與一顆溫熱的茶葉蛋中互相取暖，少女緊繃的心在貓咪蹭蹭的瞬間融化，找回前行的勇氣。';
+  setPreset1('平溪鐵道與三花貓', '45', '三個溫馨感人且富有詩意', '新海誠光影動畫風格', '動漫', '高中少女', '右耳有剪耳標記的三花流浪貓', '其中要有平溪老街鐵道與避雨的日式老柑仔店屋簷');
+
+  document.getElementById('p2-scheme').value = '方案A：平溪鐵道與雨中流浪貓';
+  document.getElementById('p2-shots').value = '5';
+  updatePrompt2();
+
+  document.getElementById('p3-char').value = '17歲穿日系高中制服的黑髮少女，眼神帶著些許升學壓力後的疲憊與純真';
+  updatePrompt3();
+
+  document.getElementById('p4-title').value = '雨過天晴的平溪鐵道';
+  updatePrompt4();
+
+  document.getElementById('p5-name').value = '雨過天晴的平溪鐵道';
+  document.getElementById('p5-plot').value = '平溪鐵道滂沱午後雷陣雨，一人一貓在屋簷下共享茶葉蛋，直到夕陽金色暮光照亮鐵軌';
+  document.getElementById('p5-style').value = '清澈鋼琴與細雨環境音結合、中段伴隨火車低鳴、後段轉為溫暖琥珀金弦樂、無人聲';
+  updatePrompt5();
+
+  storyboardData = [
+    {
+      id: 101,
+      shotNum: '01',
+      shotType: '遠景 (Wide Shot)',
+      content: '平溪老街鐵道，滂沱雷陣雨落下，少女抱著書包狼狽奔入老舊柑仔店屋簷躲雨。',
+      dialogue: '「呼...雨下得好大，今天的模擬考又考砸了...」',
+      duration: 8,
+      done: false
+    },
+    {
+      id: 102,
+      shotNum: '02',
+      shotType: '中景 (Medium Shot)',
+      content: '少女低頭看見紙箱旁一隻右耳剪耳、毛髮微濕的三花貓正警惕又好奇地看著她。',
+      dialogue: '「你也沒帶傘嗎，小傢伙？」',
+      duration: 10,
+      done: false
+    },
+    {
+      id: 103,
+      shotNum: '03',
+      shotType: '特寫 (Close-Up)',
+      content: '少女撥開剛買的溫熱茶葉蛋，將蛋黃輕輕放在乾淨紙巾上遞過去，三花貓慢慢湊近嗅聞並大口吃下。',
+      dialogue: '「熱呼呼的，分你一半，吃飽就不冷了。」',
+      duration: 9,
+      done: false
+    },
+    {
+      id: 104,
+      shotNum: '04',
+      shotType: '側跟隨 (Side Tracking)',
+      content: '黃藍相間的平溪支線小火車從鐵道叮咚駛過，三花貓舒服地在少女腳邊蹭蹭，發出咕嚕聲。',
+      dialogue: '（平交道噹噹聲與貓咪舒服的呼嚕聲交織）',
+      duration: 10,
+      done: false
+    },
+    {
+      id: 105,
+      shotNum: '05',
+      shotType: '全景淡出 (Wide / Magic Hour)',
+      content: '雨過天晴，金色琥珀夕陽灑在鐵軌與老街水窪上，倒映著天光，少女破涕為笑，一人一貓相視。',
+      dialogue: '「謝謝你，明天我也會繼續加油的！」',
+      duration: 8,
+      done: false
+    }
+  ];
+
+  renderStoryboardTable();
+  goToStep(1);
+  showToast('已載入工作坊經典案例：《平溪鐵道與雨中流浪貓》全套分鏡！');
+}
+
+function loadPadletLeopardDemo() {
+  document.getElementById('project-story-synopsis').value = '【星夜迴廊～石虎的光之守護】：巡山員少年在星夜林間巡邏時，發現受困非法捕獸夾的保育類石虎幼崽。少年溫柔為牠解開陷阱包紮傷口，月光穿透竹林與蕨葉，化作如夢似幻的光之迴廊，石虎回眸致謝，人與自然達成守護的約定。';
+  setPreset1('星夜石虎守護', '30', '三個富有奇幻守護感與生態關懷', '新海誠與吉卜力細膩風', '生態動漫微短片', '巡山員少年', '野生台灣保育類石虎幼崽', '其中要有星夜森林蕨類步道與微光迴廊');
+
+  document.getElementById('p2-scheme').value = '方案1：石虎的光之守護';
+  document.getElementById('p2-shots').value = '6';
+  updatePrompt2();
+
+  document.getElementById('p3-char').value = '18歲穿墨綠色巡山員制服的少年，手持手電筒與急救包，眼神堅毅溫和';
+  updatePrompt3();
+
+  document.getElementById('p4-title').value = '星夜迴廊～石虎的光之守護';
+  updatePrompt4();
+
+  document.getElementById('p5-name').value = '星夜迴廊～石虎的光之守護';
+  document.getElementById('p5-plot').value = '夜間巡山破除陷阱救助石虎，月光映照下山林回饋的光之守護';
+  document.getElementById('p5-style').value = '空靈風鈴、排笛與悠揚大提琴、星空神秘而治癒、無人聲';
+  updatePrompt5();
+
+  storyboardData = [
+    {
+      id: 201,
+      shotNum: '01',
+      shotType: '遠景 (Wide Shot)',
+      content: '深夜靜謐的台灣中低海拔森林，巡山員手電筒光束劃破夜霧，漫天螢火與星光交織。',
+      dialogue: '「今晚的巡邏，希望能平安無事...」',
+      duration: 5,
+      done: false
+    },
+    {
+      id: 202,
+      shotNum: '02',
+      shotType: '特寫 (Close-Up)',
+      content: '手電筒光圈定格在一處蕨類草叢，一隻後腿受困的野生石虎幼崽眼帶淚光警惕哈氣。',
+      dialogue: '「別怕，我是來幫你的！」',
+      duration: 5,
+      done: false
+    },
+    {
+      id: 203,
+      shotNum: '03',
+      shotType: '中景 (Medium Shot)',
+      content: '巡山員脫下厚外套輕輕包覆小石虎，熟練使用工具小心解開生鏽金屬夾，為小爪噴灑消炎藥。',
+      dialogue: '「忍耐一下，馬上就好喔。」',
+      duration: 6,
+      done: false
+    },
+    {
+      id: 204,
+      shotNum: '04',
+      shotType: '微距特寫 (Macro Shot)',
+      content: '小石虎感受到了少年的善意，伸出舌頭輕輕舔了少年的手背，瞳孔倒映著林梢星斗。',
+      dialogue: '（小石虎發出安撫的呼嚕聲）',
+      duration: 4,
+      done: false
+    },
+    {
+      id: 205,
+      shotNum: '05',
+      shotType: '低角度仰鏡 (Low Angle)',
+      content: '小石虎重獲自由跳上長滿苔蘚的巨木樹幹，月光灑落形成光之迴廊，回頭深深望向少年。',
+      dialogue: '「快回媽媽身邊吧，這片森林永遠守護著你。」',
+      duration: 5,
+      done: false
+    },
+    {
+      id: 206,
+      shotNum: '06',
+      shotType: '遠景 (Wide Shot)',
+      content: '小石虎躍入幽深森林，夜空流星劃過，整座山林宛如被柔和光暈祝福。',
+      dialogue: '【守護台灣山林珍貴生靈】',
+      duration: 5,
+      done: false
+    }
+  ];
+
+  renderStoryboardTable();
+  goToStep(1);
+  showToast('已載入工作坊經典案例：《星夜迴廊～石虎的光之守護》！');
+}
+
+function loadPadletAuroraDemo() {
+  document.getElementById('project-story-synopsis').value = '【冰淵的星光】：水下流體失重感與極光無垠星空的完美融合。科考少女潛入極地冰海深處，與深海發光巨鯨在水波焦散的光影中相遇，感受地球最靜謐的宇宙脈動。';
+  setPreset1('冰淵星光極光', '60', '三個極致光影與科幻奇幻', '新海誠水波極光風', '奇幻動畫微電影', '水下科考少女', '深海發光藍鯨群', '其中要有極地冰下裂隙、發光粒子與水下流體光影');
+  document.getElementById('p4-title').value = '冰淵的星光';
+  updatePrompt4();
+  goToStep(1);
+  showToast('已載入工作坊案例：《冰淵的星光》！');
+}
+
+function loadPadletForestDemo() {
+  document.getElementById('project-story-synopsis').value = '【森林最後的心跳 (SDGs 15 陸域生態)】：野火過後的焦黑枯林，林務守護員在廢墟中發現一片翠綠幼苗與依偎在旁的小黑熊。人與自然攜手在焦土播種，重現林地生機。';
+  setPreset1('森林最後心跳', '30', '三個深刻警示且充滿復育希望', '吉卜力電影寫實風', 'SDGs生態微短片', '林務復育員', '野生台灣黑熊幼崽', '其中要有焦黑野火廢墟與初生嫩綠新芽對比');
+  document.getElementById('p4-title').value = '森林最後的心跳';
+  updatePrompt4();
+  goToStep(1);
+  showToast('已載入工作坊案例：《森林最後的心跳》！');
+}
+
+function loadPadletHandwashDemo() {
+  document.getElementById('project-story-synopsis').value = '【勤洗手身體棒 (幼兒衛教巧虎風)】：60秒可愛卡通微短片，可愛小老虎陪伴小朋友唱跳洗手七字訣「內外夾弓大立完」，趕跑彩色細菌大魔王，健康長大！';
+  setPreset1('勤洗手巧虎', '60', '三個活潑可愛且具教育意義', '巧虎童趣日系卡通風', '幼教衛教卡通短片', '巧虎風格小老虎', '幼兒園小朋友', '其中要有七彩肥皂泡泡洗手台與童趣幼兒園教室');
+  document.getElementById('p4-title').value = '勤洗手身體棒';
+  updatePrompt4();
+  goToStep(1);
+  showToast('已載入工作坊案例：《勤洗手身體棒》！');
 }

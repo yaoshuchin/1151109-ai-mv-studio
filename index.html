@@ -62,6 +62,10 @@
               <i class="fa-solid fa-graduation-cap text-amber-400"></i>
               <span>應用課程</span>
             </button>
+            <button id="view-mode-workshop" onclick="switchViewMode('workshop')" class="px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center space-x-1">
+              <i class="fa-solid fa-moon text-purple-400"></i>
+              <span>工作坊資源</span>
+            </button>
           </div>
 
           <!-- Load Demo Data Button -->
@@ -297,6 +301,8 @@
               <div class="flex items-center space-x-2 mb-4 overflow-x-auto pb-1 text-[11px]">
                 <span class="text-slate-500 shrink-0">快速範本：</span>
                 <button type="button" onclick="setPreset1('新海誠動漫', '30', '三個溫馨感人', '新海誠風格', '動漫', '少年', '老拉布拉多', '其中要有草原的場景')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition whitespace-nowrap border border-slate-700">新海誠 × 少年與狗</button>
+                <button type="button" onclick="loadPadletCatDemo()" class="px-2.5 py-1 bg-indigo-600/30 hover:bg-indigo-600/60 text-indigo-300 rounded-md transition whitespace-nowrap border border-indigo-500/40">平溪鐵道 × 三花貓 (工作坊)</button>
+                <button type="button" onclick="loadPadletLeopardDemo()" class="px-2.5 py-1 bg-purple-600/30 hover:bg-purple-600/60 text-purple-300 rounded-md transition whitespace-nowrap border border-purple-500/40">星夜迴廊 × 石虎守護 (工作坊)</button>
                 <button type="button" onclick="setPreset1('吉卜力冒險', '45', '兩個奇幻冒險', '吉卜力手繪風', '奇幻動畫', '魔法少女', '會說話的黑貓', '必須有浮空島與魔法森林場景')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition whitespace-nowrap border border-slate-700">吉卜力 × 奇幻冒險</button>
                 <button type="button" onclick="setPreset1('賽博龐克科幻', '30', '三個高節奏反轉', '賽博龐克電影感', '科幻微電影', '仿生人偵探', '機械導盲犬', '必須包含雨夜霓虹都市天台')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition whitespace-nowrap border border-slate-700">賽博龐克 × 科幻懸疑</button>
               </div>
@@ -1643,6 +1649,397 @@
       </div>
 
     </div><!-- END VIEW MODE 4 -->
+
+
+    <!-- ========================================== -->
+    <!-- VIEW MODE 5: WORKSHOP RESOURCES & SHOWCASE -->
+    <!-- ========================================== -->
+    <div id="view-workshop-container" class="hidden space-y-8">
+      
+      <!-- Workshop Header Banner -->
+      <div class="bg-gradient-to-r from-purple-950/80 via-slate-900 to-indigo-950/80 border border-purple-500/30 rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-56 h-56 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="max-w-3xl">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-semibold mb-3">
+              <i class="fa-solid fa-moon text-purple-400"></i>
+              <span>10/31 Moonland x 劇情式影音創作實戰工作坊</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white mb-2">
+              工作坊精選教案庫、工具鏈與學員影音成果
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+              完整收錄神奕教育精進研習（姚述勤 / 宏布斯 Bruce）工作坊看板實戰資源！涵蓋《平溪鐵道與雨中流浪貓》、《星夜迴廊～石虎的光之守護》等多組經典範例，並提供一站式工具生態系與作品展示。
+            </p>
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+              <a href="https://padlet.com/qianyikeji1/10-31-moonland-x-s025a2sh1f98in2ada3v" target="_blank" rel="noopener" class="px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold transition flex items-center space-x-1.5 shadow-md shadow-purple-600/30">
+                <i class="fa-solid fa-up-right-from-square text-[10px]"></i>
+                <span>開啟原始研習 Padlet 看板 ↗</span>
+              </a>
+              <span class="px-2.5 py-1 bg-slate-800 text-slate-400 rounded-md border border-slate-700 text-[11px]">
+                <i class="fa-solid fa-key text-amber-400 mr-1"></i>LINE研習群密碼：0800
+              </span>
+              <span class="px-2.5 py-1 bg-slate-800 text-slate-400 rounded-md border border-slate-700 text-[11px]">
+                <i class="fa-solid fa-users text-indigo-400 mr-1"></i>宏布斯社群密碼：1972
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workshop Tools Grid (From Padlet) -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+            <i class="fa-solid fa-toolbox text-purple-400"></i>
+            <span>工作坊推薦工具生態系 (Workshop Ecosystem)</span>
+          </h3>
+          <span class="text-xs text-slate-400">點擊外部連結即可前往官方平台</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 text-xs">
+          <!-- Moonland -->
+          <a href="https://moonland.ai/" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-purple-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-moon"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-purple-300 transition flex items-center justify-between">
+              <span>Moonland 官網</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">AI 故事影音生成創作平台</div>
+          </a>
+
+          <!-- Gemini Share -->
+          <a href="https://share.gemini.google/5c1CkmDw6mVi" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-sky-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-comments"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-sky-300 transition flex items-center justify-between">
+              <span>與 AI 的對話範本</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">Google Gemini 課堂實戰共享</div>
+          </a>
+
+          <!-- 絕好聲創 VOAI -->
+          <a href="https://www.voai.ai/" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-rose-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-microphone-lines"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-rose-300 transition flex items-center justify-between">
+              <span>絕好聲創 (VOAI)</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">專業級 AI 配音與聲音生成</div>
+          </a>
+
+          <!-- 雅婷智慧 Yating Studio -->
+          <a href="https://studio.yating.tw/" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-emerald-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-volume-high"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-emerald-300 transition flex items-center justify-between">
+              <span>雅婷智慧</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">台灣在地口音與台語自然 TTS</div>
+          </a>
+
+          <!-- TTSMaker -->
+          <a href="https://ttsmaker.com/" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-amber-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-language"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-amber-300 transition flex items-center justify-between">
+              <span>TTSMaker</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">多語系免費文字轉語音配音</div>
+          </a>
+
+          <!-- Microsoft Clipchamp -->
+          <a href="https://clipchamp.com/en/" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-teal-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-film"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-teal-300 transition flex items-center justify-between">
+              <span>MS Clipchamp</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">微軟輕量多軌道影片剪輯</div>
+          </a>
+
+          <!-- 日本插畫家風格圖鑑 -->
+          <a href="https://macrobruce.github.io/japan2026-style-atlas/" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-pink-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-palette"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-pink-300 transition flex items-center justify-between">
+              <span>日本插畫家風格圖鑑</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">頂尖名家美學提示詞庫</div>
+          </a>
+
+          <!-- AIGEM 創作島 -->
+          <a href="https://aigem-anime-island.pages.dev" target="_blank" rel="noopener" class="bg-slate-900 border border-slate-800 hover:border-indigo-500/60 p-4 rounded-xl transition group">
+            <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold mb-2 group-hover:scale-110 transition">
+              <i class="fa-solid fa-mountain-sun"></i>
+            </div>
+            <div class="font-bold text-white group-hover:text-indigo-300 transition flex items-center justify-between">
+              <span>AIGEM 創作島</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">AI 生成感性影音實驗室</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Workshop Featured Scenarios (Click to Load) -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+            <i class="fa-solid fa-clapperboard text-indigo-400"></i>
+            <span>工作坊實戰劇本專案庫（點擊一鍵載入全套分鏡）</span>
+          </h3>
+          <span class="text-xs text-slate-400">取材自 10/31 研習學員與講師精選專案</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <!-- Scenario 1: 平溪鐵道與雨中流浪貓 -->
+          <div class="bg-slate-900 border border-slate-800 hover:border-indigo-500/60 rounded-xl p-5 shadow-lg flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">新海誠風 · 療癒動漫</span>
+                <span class="text-[10px] text-slate-500">45 秒短片</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-indigo-300 transition mb-2">
+                平溪鐵道與雨中流浪貓
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                高中少女在放學後滂沱的平溪老街躲雨，偶遇同樣在屋簷下避雨的三花貓。在雨聲、列車低鳴與溫熱茶葉蛋中互相療癒，重拾平靜與勇氣。
+              </p>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-[11px] text-slate-400 space-y-1 mb-4">
+                <div><strong>主角：</strong>高中少女、剪耳三花流浪貓</div>
+                <div><strong>場景：</strong>平溪老街、日式木造平交道、老柑仔店</div>
+                <div><strong>氛圍：</strong>冷灰藍過渡至暖橘琥珀金夕陽（Magic Hour）</div>
+              </div>
+            </div>
+            <button onclick="loadPadletCatDemo()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center space-x-1.5 shadow-md shadow-indigo-600/30">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>載入此專案並進入分鏡工作台</span>
+            </button>
+          </div>
+
+          <!-- Scenario 2: 星夜迴廊～石虎的光之守護 -->
+          <div class="bg-slate-900 border border-slate-800 hover:border-purple-500/60 rounded-xl p-5 shadow-lg flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">在地生態 · 生命教育</span>
+                <span class="text-[10px] text-slate-500">30 秒短片</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-purple-300 transition mb-2">
+                星夜迴廊～石虎的光之守護
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                巡山員少年在星夜林間巡邏時，破除非法捕獸陷阱，解救受困的台灣石虎幼崽。月光映照下，山林生靈回饋如夢似幻的光之祝福。
+              </p>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-[11px] text-slate-400 space-y-1 mb-4">
+                <div><strong>主角：</strong>巡山員少年、野生石虎幼崽</div>
+                <div><strong>場景：</strong>星光林道、蕨類山谷、微光木棧道</div>
+                <div><strong>配樂：</strong>空靈風鈴、排笛與弦樂重奏</div>
+              </div>
+            </div>
+            <button onclick="loadPadletLeopardDemo()" class="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center space-x-1.5 shadow-md shadow-purple-600/30">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>載入此專案並進入分鏡工作台</span>
+            </button>
+          </div>
+
+          <!-- Scenario 3: 冰淵的星光 -->
+          <div class="bg-slate-900 border border-slate-800 hover:border-sky-500/60 rounded-xl p-5 shadow-lg flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">極致光影 · 科幻奇幻</span>
+                <span class="text-[10px] text-slate-500">60 秒短片</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-sky-300 transition mb-2">
+                冰淵的星光 (水下極光流體)
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                將「水下流體的失重感」與「極光星空的無垠感」結合，呈現新海誠動畫風格中極致的光影與水面折射，極度適合 Midjourney + Runway 生成！
+              </p>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-[11px] text-slate-400 space-y-1 mb-4">
+                <div><strong>主角：</strong>水下科考少女、深海發光生物</div>
+                <div><strong>場景：</strong>冰藍冰裂縫、深海極光浮游粒子</div>
+                <div><strong>視覺：</strong>Caustics 水波焦散、極光光幔</div>
+              </div>
+            </div>
+            <button onclick="loadPadletAuroraDemo()" class="w-full py-2 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center space-x-1.5 shadow-md shadow-sky-600/30">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>載入此專案並進入分鏡工作台</span>
+            </button>
+          </div>
+
+          <!-- Scenario 4: 森林最後的心跳 (SDGs 15) -->
+          <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/60 rounded-xl p-5 shadow-lg flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">SDGs 15 · 陸域生態</span>
+                <span class="text-[10px] text-slate-500">30 秒倡議</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition mb-2">
+                森林最後的心跳 (風中的遷徙)
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                透過森林野火後重生的新芽與林務巡護員守護受驚黑熊幼崽的互動，喚起對氣候行動與陸域生態多樣性的強烈共鳴。
+              </p>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-[11px] text-slate-400 space-y-1 mb-4">
+                <div><strong>主角：</strong>林務員、受傷野生台灣黑熊幼崽</div>
+                <div><strong>場景：</strong>焦黑殘林到綠意初醒的山谷</div>
+                <div><strong>意義：</strong>SDGs 13 氣候行動 × SDG 15 陸域保育</div>
+              </div>
+            </div>
+            <button onclick="loadPadletForestDemo()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center space-x-1.5 shadow-md shadow-emerald-600/30">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>載入此專案並進入分鏡工作台</span>
+            </button>
+          </div>
+
+          <!-- Scenario 5: 勤洗手身體棒 (幼教巧虎) -->
+          <div class="bg-slate-900 border border-slate-800 hover:border-amber-500/60 rounded-xl p-5 shadow-lg flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">衛教宣導 · 巧虎卡通</span>
+                <span class="text-[10px] text-slate-500">60 秒衛教</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-amber-300 transition mb-2">
+                勤洗手身體棒 (幼兒衛教短片)
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                專為低幼兒童設計的可愛卡通衛教微短片！活潑的小老虎帶領幼童唱跳「內外夾弓大立完」洗手口訣，趕跑細菌大魔王。
+              </p>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-[11px] text-slate-400 space-y-1 mb-4">
+                <div><strong>主角：</strong>巧虎風可愛小老虎、幼兒園小朋友</div>
+                <div><strong>場景：</strong>色彩繽紛幼兒園水槽、肥皂泡泡王國</div>
+                <div><strong>配樂：</strong>輕快卡哇伊童謠兒歌</div>
+              </div>
+            </div>
+            <button onclick="loadPadletHandwashDemo()" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center space-x-1.5 shadow-md shadow-amber-600/30">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>載入此專案並進入分鏡工作台</span>
+            </button>
+          </div>
+
+          <!-- Scenario 6: 光落之時 (陪伴與放手) -->
+          <div class="bg-slate-900 border border-slate-800 hover:border-rose-500/60 rounded-xl p-5 shadow-lg flex flex-col justify-between transition group">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">生命教育 · 深情告別</span>
+                <span class="text-[10px] text-slate-500">30 秒感人</span>
+              </div>
+              <h4 class="text-base font-bold text-white group-hover:text-rose-300 transition mb-2">
+                光落之時：你辛苦了，好好休息！
+              </h4>
+              <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                「那些被光照亮的歲月，從不曾消失。」探討陪伴老犬最後旅程的生命告別，透過光線的消長傳遞生死交織的釋懷與感謝。
+              </p>
+              <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-[11px] text-slate-400 space-y-1 mb-4">
+                <div><strong>主角：</strong>成年青年、高齡白毛拉布拉多</div>
+                <div><strong>場景：</strong>落日微光客廳、老地毯、金色落葉窗台</div>
+                <div><strong>台詞：</strong>「你辛苦了，謝謝你陪我長大。」</div>
+              </div>
+            </div>
+            <button onclick="loadDemoData()" class="w-full py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-lg transition flex items-center justify-center space-x-1.5 shadow-md shadow-rose-600/30">
+              <i class="fa-solid fa-play text-[10px]"></i>
+              <span>載入此專案並進入分鏡工作台</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Workshop Video Showcase & Community Links -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <h3 class="text-lg font-bold text-white mb-2 flex items-center space-x-2">
+          <i class="fa-solid fa-play-circle text-rose-400"></i>
+          <span>工作坊成果影音作品與影音社群</span>
+        </h3>
+        <p class="text-xs text-slate-400 mb-5">
+          觀摩工作坊講師與研習學員的成片範例，吸收剪輯節奏與音畫對位經驗：
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+          <!-- Video 1 -->
+          <a href="https://www.youtube.com/watch?v=GNBsHODfQzM" target="_blank" rel="noopener" class="bg-slate-950 p-4 rounded-xl border border-slate-800 hover:border-rose-500/60 transition group flex flex-col justify-between">
+            <div>
+              <div class="w-full aspect-video bg-rose-950/40 rounded-lg flex items-center justify-center text-rose-400 text-2xl mb-3 border border-rose-500/20 group-hover:scale-105 transition">
+                <i class="fa-brands fa-youtube"></i>
+              </div>
+              <div class="font-bold text-white group-hover:text-rose-400 transition mb-1">
+                《石虎的光之守護》
+              </div>
+              <p class="text-[11px] text-slate-400">研習示範微電影成品，展現 AI 角色光影與情緒營造。</p>
+            </div>
+            <span class="text-rose-400 text-[11px] font-semibold mt-3 flex items-center">
+              前往 YouTube 觀看 ↗
+            </span>
+          </a>
+
+          <!-- Video 2 -->
+          <a href="https://youtube.com/shorts/7D_edtYizsI" target="_blank" rel="noopener" class="bg-slate-950 p-4 rounded-xl border border-slate-800 hover:border-rose-500/60 transition group flex flex-col justify-between">
+            <div>
+              <div class="w-full aspect-video bg-rose-950/40 rounded-lg flex items-center justify-center text-rose-400 text-2xl mb-3 border border-rose-500/20 group-hover:scale-105 transition">
+                <i class="fa-solid fa-mobile-screen"></i>
+              </div>
+              <div class="font-bold text-white group-hover:text-rose-400 transition mb-1">
+                《一起散步》Shorts
+              </div>
+              <p class="text-[11px] text-slate-400">直式短影音研習創作成果，快節奏與溫暖治癒。</p>
+            </div>
+            <span class="text-rose-400 text-[11px] font-semibold mt-3 flex items-center">
+              前往 Shorts 觀看 ↗
+            </span>
+          </a>
+
+          <!-- Video 3 Playlist -->
+          <a href="https://www.youtube.com/watch?v=UYfVXgxk-Hw&list=PLnzEelf3mgWMUhXNo_zpcTwVUneRHnf7M" target="_blank" rel="noopener" class="bg-slate-950 p-4 rounded-xl border border-slate-800 hover:border-indigo-500/60 transition group flex flex-col justify-between">
+            <div>
+              <div class="w-full aspect-video bg-indigo-950/40 rounded-lg flex items-center justify-center text-indigo-400 text-2xl mb-3 border border-indigo-500/20 group-hover:scale-105 transition">
+                <i class="fa-solid fa-list-ul"></i>
+              </div>
+              <div class="font-bold text-white group-hover:text-indigo-400 transition mb-1">
+                工作坊學員作品集清單
+              </div>
+              <p class="text-[11px] text-slate-400">YouTube 官方作品集播放清單，收錄多元風格影音。</p>
+            </div>
+            <span class="text-indigo-400 text-[11px] font-semibold mt-3 flex items-center">
+              瀏覽播放清單 ↗
+            </span>
+          </a>
+
+          <!-- FB Community -->
+          <a href="https://www.facebook.com/groups/macrobruce" target="_blank" rel="noopener" class="bg-slate-950 p-4 rounded-xl border border-slate-800 hover:border-sky-500/60 transition group flex flex-col justify-between">
+            <div>
+              <div class="w-full aspect-video bg-sky-950/40 rounded-lg flex items-center justify-center text-sky-400 text-2xl mb-3 border border-sky-500/20 group-hover:scale-105 transition">
+                <i class="fa-brands fa-facebook"></i>
+              </div>
+              <div class="font-bold text-white group-hover:text-sky-400 transition mb-1">
+                AI 故事影音實驗室
+              </div>
+              <p class="text-[11px] text-slate-400">宏布斯 Bruce 主理之 Facebook AI 影音創作交流社團。</p>
+            </div>
+            <span class="text-sky-400 text-[11px] font-semibold mt-3 flex items-center">
+              加入臉書社團 ↗
+            </span>
+          </a>
+        </div>
+      </div>
+
+    </div><!-- END VIEW MODE 5 -->
+
 
 
   </main>
