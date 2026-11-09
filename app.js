@@ -182,13 +182,15 @@ function switchViewMode(mode) {
   const stepsContainer = document.getElementById('view-steps-container');
   const promptsContainer = document.getElementById('view-prompts-container');
   const storyboardContainer = document.getElementById('view-storyboard-container');
+  const curriculumContainer = document.getElementById('view-curriculum-container');
 
   const btnSteps = document.getElementById('view-mode-steps');
   const btnPrompts = document.getElementById('view-mode-prompts');
   const btnStoryboard = document.getElementById('view-mode-storyboard');
+  const btnCurriculum = document.getElementById('view-mode-curriculum');
 
   // Reset active classes
-  [btnSteps, btnPrompts, btnStoryboard].forEach(b => {
+  [btnSteps, btnPrompts, btnStoryboard, btnCurriculum].forEach(b => {
     if (b) {
       b.className = "px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center space-x-1";
     }
@@ -197,6 +199,7 @@ function switchViewMode(mode) {
   stepsContainer.classList.add('hidden');
   promptsContainer.classList.add('hidden');
   storyboardContainer.classList.add('hidden');
+  if (curriculumContainer) curriculumContainer.classList.add('hidden');
 
   if (mode === 'steps') {
     stepsContainer.classList.remove('hidden');
@@ -207,9 +210,132 @@ function switchViewMode(mode) {
   } else if (mode === 'storyboard') {
     storyboardContainer.classList.remove('hidden');
     if (btnStoryboard) btnStoryboard.className = "px-3 py-1.5 rounded-md transition-all bg-indigo-600 text-white shadow-sm flex items-center space-x-1";
+  } else if (mode === 'curriculum') {
+    if (curriculumContainer) curriculumContainer.classList.remove('hidden');
+    if (btnCurriculum) btnCurriculum.className = "px-3 py-1.5 rounded-md transition-all bg-indigo-600 text-white shadow-sm flex items-center space-x-1";
   }
 
   window.scrollTo({ top: 120, behavior: 'smooth' });
+}
+
+// ====================================================
+// CURRICULUM TEMPLATE APPLIERS
+// ====================================================
+
+function applyCurriculumTemplate(type) {
+  if (type === 'living_tech') {
+    // 國中生活科技：AI 影音創作與數位內容設計
+    document.getElementById('project-story-synopsis').value = '【生活科技專案：智慧循跡避障小車】國中生發明家在生活科技工坊歷經機構設計、3D列印與電路銲接，最終克服困難成功完成能輔助長者室內搬運物品的自走車。';
+    setPreset1('生活科技自造發明', '30', '三個具備科技感與實用性', '現代寫實電影感', '科技發明展示短片', '國中生創客少年', '智慧四輪循跡自走車', '其中要有生活科技創客工坊、工具牆與測試跑道');
+    
+    document.getElementById('p2-scheme').value = '方案1：工坊裡的科技夢';
+    document.getElementById('p2-shots').value = '6';
+    updatePrompt2();
+
+    document.getElementById('p3-char').value = '15歲戴防護護目鏡的少年創客，穿工作圍裙，手持螺絲起子與電路板';
+    updatePrompt3();
+
+    document.getElementById('p4-title').value = '自造的微光：智慧小車';
+    updatePrompt4();
+
+    document.getElementById('p5-name').value = '自造的微光：智慧小車';
+    document.getElementById('p5-plot').value = '工坊機具聲中反覆除錯測試，小車成功在跑道上避開障礙物奔馳的感動時刻';
+    document.getElementById('p5-style').value = '輕快明亮科技感電子流行樂、充滿探索動力、無人聲';
+    updatePrompt5();
+
+    showToast('已成功套用【國中生活科技】教案範本！');
+  } else if (type === 'info_tech') {
+    // 國中資訊科技：生成式 AI、提示詞工程與多媒體整合
+    document.getElementById('project-story-synopsis').value = '【資訊科技專案：代碼與倫理的對話】國中程式設計社學生在探索生成式 AI 時，探討提示詞工程如何激發創意，同時反思深度偽造（Deepfake）辨識與數位智慧財產權的重要性。';
+    setPreset1('資訊科技AI倫理', '30', '三個富有哲理與科技反思', '賽博龐克科幻電影風', '資訊科技微電影', '中學少年程式設計師', '具備對話能力的光粒子AI助手', '其中要有流動數位數據流與資訊電腦教室');
+
+    document.getElementById('p2-scheme').value = '方案1：代碼之外的真偽';
+    document.getElementById('p2-shots').value = '6';
+    updatePrompt2();
+
+    document.getElementById('p3-char').value = '穿學校制服的少年工程師，眼神專注，身旁漂浮著淡藍色全息投影代碼';
+    updatePrompt3();
+
+    document.getElementById('p4-title').value = '思維的重塑：AI與我';
+    updatePrompt4();
+
+    document.getElementById('p5-name').value = '思維的重塑：AI與我';
+    document.getElementById('p5-plot').value = '鍵盤敲擊與數據流動，在科技演進與人性真善美之間取得平衡的深思旅程';
+    document.getElementById('p5-style').value = '現代極簡合成器音樂、富有未來懸疑感與深度反思、無人聲';
+    updatePrompt5();
+
+    showToast('已成功套用【國中資訊科技】教案範本！');
+  } else if (type === 'sdgs_marine') {
+    // 跨領域 SDGs 14 海洋生態
+    document.getElementById('project-story-synopsis').value = '【跨領域 SDGs 海洋保育專案】海洋志工女孩在沙灘發現受困海廢的小海龜，發起校園減塑倡議，全校師生攜手淨灘，讓大海重現澄澈藍天。';
+    setPreset1('SDGs 海洋減塑', '30', '三個震撼警醒且引人深思', '吉卜力手繪細膩風', '環境保護公益短片', '國中環保志工女孩', '身上纏繞廢棄漁網的小海龜', '其中要有蔚藍海洋底層與漂浮塑膠垃圾對比場景');
+
+    document.getElementById('p2-scheme').value = '方案1：蔚藍之淚的呼喚';
+    document.getElementById('p2-shots').value = '6';
+    updatePrompt2();
+
+    document.getElementById('p3-char').value = '紮馬尾穿志工反光背心的14歲女孩，神情堅定熱忱，手拿環保夾與竹籤桶';
+    updatePrompt3();
+
+    document.getElementById('p4-title').value = '守護海龜的蔚藍心願';
+    updatePrompt4();
+
+    document.getElementById('p5-name').value = '守護海龜的蔚藍心願';
+    document.getElementById('p5-plot').value = '從海浪拍打殘破塑膠的沉重，轉變為全校學生齊心淨灘後的明亮希望';
+    document.getElementById('p5-style').value = '深沉大提琴開場、漸轉為清澈明亮鋼琴與溫暖木管樂、無人聲';
+    updatePrompt5();
+
+    showToast('已套用【跨領域 SDGs 海洋保育】範本！');
+  } else if (type === 'life_edu') {
+    // 跨領域生命教育：少年與老拉布拉多的一生
+    loadDemoData();
+    showToast('已套用【跨領域生命教育：陪伴動物】範本！');
+  } else if (type === 'local_story') {
+    // 跨領域在地故事：家鄉老街文史走讀
+    document.getElementById('project-story-synopsis').value = '【跨領域在地故事創作】國中生帶著老相機走入家鄉百年老街，透過耆老訪談與老紅磚牆光影，發現家鄉昔日樟腦與茶葉繁榮歲月，以微電影記錄即將失傳的傳統手藝。';
+    setPreset1('家鄉在地故事', '30', '三個溫暖懷舊且富有文化傳承', '新海誠光影水彩風', '人文紀錄微短片', '拿著復古相機的國中生', '正在手作捏陶的百年老藝師', '其中要有百年紅磚老街、古厝中庭與斜陽金光');
+
+    document.getElementById('p2-scheme').value = '方案1：紅磚歲月的記憶';
+    document.getElementById('p2-shots').value = '6';
+    updatePrompt2();
+
+    document.getElementById('p3-char').value = '戴文青扁帽手持復古雙眼相機的國中少年，穿著素色麻質襯衫';
+    updatePrompt3();
+
+    document.getElementById('p4-title').value = '老街的時光迴音';
+    updatePrompt4();
+
+    document.getElementById('p5-name').value = '老街的時光迴音';
+    document.getElementById('p5-plot').value = '古老陶輪旋轉與泥香，跨越世代的眼神交會與文化扎根';
+    document.getElementById('p5-style').value = '東方古典竹笛與溫柔木吉他二重奏、微風流淌、治癒懷舊、無人聲';
+    updatePrompt5();
+
+    showToast('已套用【跨領域在地故事創作】範本！');
+  } else if (type === 'creative_short') {
+    // 彈性學習課程：短影音製作、數位敘事及創意專題
+    document.getElementById('project-story-synopsis').value = '【彈性學習短影音創意專題】班級接力賽前的挫折與逆轉！30秒微電影運用極限特寫、慢動作與熱血鼓點，演繹國中校園青春運動會同儕互助與永不放棄的運動家精神。';
+    setPreset1('校園熱血短影音', '30', '三個高節奏熱血反轉', '電影感寬螢幕強烈對比', '校園青春短影音', '接力賽最後一棒的奔跑少年', '在終點線揮舞旗幟加油的導師與同學', '其中要有陽光熾熱的紅土操場跑道與終點白線');
+
+    document.getElementById('p2-scheme').value = '方案1：終點前的最後一秒';
+    document.getElementById('p2-shots').value = '6';
+    updatePrompt2();
+
+    document.getElementById('p3-char').value = '滿頭大汗握緊接力棒全力衝刺的15歲少年，運動短褲與球鞋';
+    updatePrompt3();
+
+    document.getElementById('p4-title').value = '奔跑吧！青春的接力棒';
+    updatePrompt4();
+
+    document.getElementById('p5-name').value = '奔跑吧！青春的接力棒';
+    document.getElementById('p5-plot').value = '從呼吸急促的慢動作倒數，到全班歡呼衝過終點線的瞬間爆發';
+    document.getElementById('p5-style').value = '強烈打擊樂鼓點、史詩管弦漸強高潮、熱血澎湃、無人聲';
+    updatePrompt5();
+
+    showToast('已套用【彈性學習短影音創意專題】範本！');
+  }
+
+  // Auto switch to step 1 to let user inspect
+  goToStep(1);
 }
 
 // ====================================================

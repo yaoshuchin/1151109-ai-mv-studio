@@ -58,6 +58,10 @@
               <i class="fa-solid fa-table-cells"></i>
               <span>分鏡工作台</span>
             </button>
+            <button id="view-mode-curriculum" onclick="switchViewMode('curriculum')" class="px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center space-x-1">
+              <i class="fa-solid fa-graduation-cap text-amber-400"></i>
+              <span>應用課程</span>
+            </button>
           </div>
 
           <!-- Load Demo Data Button -->
@@ -1370,6 +1374,276 @@
         </div>
       </div>
     </div><!-- END VIEW MODE 3 -->
+
+
+    <!-- ========================================== -->
+    <!-- VIEW MODE 4: CURRICULUM APPLICATIONS       -->
+    <!-- ========================================== -->
+    <div id="view-curriculum-container" class="hidden space-y-8">
+      
+      <!-- Curriculum Header Banner -->
+      <div class="bg-gradient-to-r from-indigo-900/60 via-purple-900/40 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-3">
+            <i class="fa-solid fa-graduation-cap text-amber-400"></i>
+            <span>教育現場教學應用指南 · 核心素養導向</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white mb-2">
+            AI 短片創作七階段：四大應用課程架構
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            本互動教學工作台完整融入十二年國民基本教育科技領域與跨學科素養，透過結構化提示詞工程與 7 步驟創作流程，引導學生從被動的「技術消費者」轉變為主動的「數位自造與敘事創作者」。
+          </p>
+        </div>
+      </div>
+
+      <!-- 4 Course Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Course 1: 國中生活科技 -->
+        <div class="bg-slate-900 border border-slate-800 hover:border-indigo-500/60 rounded-2xl p-6 shadow-xl transition flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-md text-xs font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">生活科技</span>
+              <span class="text-xs text-slate-400 flex items-center space-x-1"><i class="fa-solid fa-compass-drafting text-indigo-400"></i><span>設計與製作</span></span>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2 group-hover:text-indigo-300 transition">
+              國中生活科技：AI 影音創作與數位內容設計
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              將工程設計流程（發想、設計、模型、評估）結合 AI 數位傳播技術，引導學生透過視覺化影音展現機構創意與科技產品構想。
+            </p>
+
+            <div class="space-y-2 mb-5 text-xs text-slate-300">
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-indigo-400 mt-0.5"></i>
+                <span><strong>設計歷程轉化：</strong>運用 Character Sheet 概念繪製發明構想多重視角。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-indigo-400 mt-0.5"></i>
+                <span><strong>多媒材傳播設計：</strong>整合 3D 視覺渲染與旁白，解說生活科技機構運動原理。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-indigo-400 mt-0.5"></i>
+                <span><strong>校園安全教育：</strong>製作生活科技工坊機具安全操作與自造宣導微短片。</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-[11px] text-slate-400">推薦產出：生活科技自造發明介紹片</span>
+            <button onclick="applyCurriculumTemplate('living_tech')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/30">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>套用生科教案範本</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Course 2: 國中資訊科技 -->
+        <div class="bg-slate-900 border border-slate-800 hover:border-sky-500/60 rounded-2xl p-6 shadow-xl transition flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-md text-xs font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">資訊科技</span>
+              <span class="text-xs text-slate-400 flex items-center space-x-1"><i class="fa-solid fa-code text-sky-400"></i><span>生成式 AI 與素養</span></span>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2 group-hover:text-sky-300 transition">
+              國中資訊科技：生成式 AI、提示詞工程與多媒體整合
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              深入探討生成式 AI 演算法概念，實踐結構化提示詞工程（Prompt Engineering），並建立正確的資訊倫理、智財權與 Deepfake 辨析素養。
+            </p>
+
+            <div class="space-y-2 mb-5 text-xs text-slate-300">
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-sky-400 mt-0.5"></i>
+                <span><strong>提示詞工程學：</strong>學習變數拆解、主詞定位、風格參數與負向提示控制。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-sky-400 mt-0.5"></i>
+                <span><strong>多模態整合實作：</strong>掌握 Text-to-Image、Image-to-Video 與 Text-to-Audio 跨模型串接。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-sky-400 mt-0.5"></i>
+                <span><strong>AI 倫理與法規：</strong>反思生成內容版權、偏見風險與合理使用原則。</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-[11px] text-slate-400">推薦產出：AI 科技倫理反思微電影</span>
+            <button onclick="applyCurriculumTemplate('info_tech')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md shadow-sky-600/30">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>套用資科教案範本</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Course 3: 跨領域課程 -->
+        <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/60 rounded-2xl p-6 shadow-xl transition flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-md text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">跨領域整合</span>
+              <span class="text-xs text-slate-400 flex items-center space-x-1"><i class="fa-solid fa-earth-americas text-emerald-400"></i><span>SDGs 與人文社會</span></span>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2 group-hover:text-emerald-300 transition">
+              跨領域課程：SDGs、環境教育、生命教育及在地故事創作
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              連結聯合國永續發展目標（SDGs 11/13/14）、生命教育人與動物相伴關懷，以及在地文史走讀，讓 AI 短片成為深具人文溫度的倡議載體。
+            </p>
+
+            <div class="space-y-2 mb-5 text-xs text-slate-300">
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-emerald-400 mt-0.5"></i>
+                <span><strong>SDGs 永續行動：</strong>創作海洋塑膠危機、氣候變遷與綠色生活倡議短片。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-emerald-400 mt-0.5"></i>
+                <span><strong>生命教育省思：</strong>以「少年與老拉布拉多」探討陪伴動物生老病死與生命責任。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-emerald-400 mt-0.5"></i>
+                <span><strong>在地文史走讀：</strong>將家鄉古蹟老街、耆老口述記憶轉譯為歷史漫遊動畫。</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
+            <span class="text-[11px] text-slate-400">快速套用跨領域範本：</span>
+            <div class="flex items-center space-x-1.5">
+              <button onclick="applyCurriculumTemplate('sdgs_marine')" class="px-2.5 py-1 bg-emerald-600/30 hover:bg-emerald-600/60 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold rounded transition">
+                SDGs 海洋減塑
+              </button>
+              <button onclick="applyCurriculumTemplate('life_edu')" class="px-2.5 py-1 bg-purple-600/30 hover:bg-purple-600/60 text-purple-300 border border-purple-500/40 text-[11px] font-bold rounded transition">
+                生命教育老犬
+              </button>
+              <button onclick="applyCurriculumTemplate('local_story')" class="px-2.5 py-1 bg-amber-600/30 hover:bg-amber-600/60 text-amber-300 border border-amber-500/40 text-[11px] font-bold rounded transition">
+                家鄉在地故事
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 4: 彈性學習課程 -->
+        <div class="bg-slate-900 border border-slate-800 hover:border-rose-500/60 rounded-2xl p-6 shadow-xl transition flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-3 py-1 rounded-md text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">彈性學習與社團</span>
+              <span class="text-xs text-slate-400 flex items-center space-x-1"><i class="fa-solid fa-video text-rose-400"></i><span>微電影與自媒體</span></span>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2 group-hover:text-rose-300 transition">
+              彈性學習課程：短影音製作、數位敘事及創意專題
+            </h3>
+            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+              適合作為校訂彈性學習、影音創客社團或多元自主專題。強調影視敘事三幕劇結構、黃金 30 秒節奏掌握與微電影成果發表。
+            </p>
+
+            <div class="space-y-2 mb-5 text-xs text-slate-300">
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-rose-400 mt-0.5"></i>
+                <span><strong>數位敘事結構：</strong>運用「起、承、轉、合」規劃具吸引力的視覺鉤子（Hook）。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-rose-400 mt-0.5"></i>
+                <span><strong>導演分鏡工作台：</strong>訓練鏡位景別、鏡頭運動（Pan/Tilt/Zoom）與時間線節奏。</span>
+              </div>
+              <div class="flex items-start space-x-2">
+                <i class="fa-solid fa-check-circle text-rose-400 mt-0.5"></i>
+                <span><strong>專題展演與反思：</strong>以小組協同合作模式產出短片，舉辦班級影展與同儕互評。</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-[11px] text-slate-400">推薦產出：30秒創意微電影專題</span>
+            <button onclick="applyCurriculumTemplate('creative_short')" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-lg transition flex items-center space-x-1.5 shadow-md shadow-rose-600/30">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>套用短影音教案範本</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Curriculum Mapping Matrix Table -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <h3 class="text-lg font-bold text-white mb-2 flex items-center space-x-2">
+          <i class="fa-solid fa-table-list text-indigo-400"></i>
+          <span>AI 短片創作七階段 × 四大課程素養對照矩陣</span>
+        </h3>
+        <p class="text-xs text-slate-400 mb-5">
+          清楚對應 7 個實作階段在不同科目中所培養的具體能力指標與學習表現。
+        </p>
+
+        <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-950">
+          <table class="w-full text-left text-xs text-slate-300 divide-y divide-slate-800">
+            <thead class="bg-slate-900/90 text-slate-400 text-[11px] font-bold uppercase">
+              <tr>
+                <th class="p-3 w-32">創作階段</th>
+                <th class="p-3">國中生活科技</th>
+                <th class="p-3">國中資訊科技</th>
+                <th class="p-3">跨領域 (SDGs/生命/在地)</th>
+                <th class="p-3">彈性學習短影音</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60">
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-3 font-bold text-indigo-300">階段 1：劇情發想</td>
+                <td class="p-3">生活問題發現與設計主題定義</td>
+                <td class="p-3">自然語言輸入與 LLM 互動構思</td>
+                <td class="p-3">永續議題與人文價值觀聚焦</td>
+                <td class="p-3">吸引目標觀眾之題材企劃</td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-3 font-bold text-purple-300">階段 2：角色設定</td>
+                <td class="p-3">產品四視角三維造型構想</td>
+                <td class="p-3">特徵固定參數與 Character Sheet</td>
+                <td class="p-3">角色特徵與生命背景深度刻畫</td>
+                <td class="p-3">視覺符號與人物識別度設計</td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-3 font-bold text-sky-300">階段 3：分鏡腳本</td>
+                <td class="p-3">工作流程分解與製程圖繪製</td>
+                <td class="p-3">模組化結構分解與中英提示對照</td>
+                <td class="p-3">事件時間軸與情境脈絡安排</td>
+                <td class="p-3">視聽語言、景別與節奏掌握</td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-3 font-bold text-emerald-300">階段 4：AI 圖像生成</td>
+                <td class="p-3">數位平面設計與美學版面配置</td>
+                <td class="p-3">Diffusion 影像生成與墊圖控制</td>
+                <td class="p-3">真實環境寫照與情感色調烘托</td>
+                <td class="p-3">電影級構圖與片頭海報主視覺</td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-3 font-bold text-amber-300">階段 5：AI 動態影片</td>
+                <td class="p-3">動態運動機構模擬與物理呈現</td>
+                <td class="p-3">圖生影片運鏡參數 (Motion Strength)</td>
+                <td class="p-3">生命動態律動與自然景物流動</td>
+                <td class="p-3">推拉搖移鏡頭語言與氛圍塑造</td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-3 font-bold text-rose-300">階段 6：聲音與配樂</td>
+                <td class="p-3">多媒體聲光效果搭配</td>
+                <td class="p-3">TTS 語音合成與純音樂 Instrumental</td>
+                <td class="p-3">情感共鳴配樂與口述歷史錄音</td>
+                <td class="p-3">節奏對位、旁白演繹與音效鋪陳</td>
+              </tr>
+              <tr class="hover:bg-slate-900/40">
+                <td class="p-3 font-bold text-teal-300">階段 7：剪輯與整合</td>
+                <td class="p-3">成果展示發表與整體評估改善</td>
+                <td class="p-3">數位影音格式規格編碼 (1080p/4K)</td>
+                <td class="p-3">議題倡議發布與社會影響力傳播</td>
+                <td class="p-3">短影音成片輸出、影展評析互評</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- END VIEW MODE 4 -->
+
 
   </main>
 
