@@ -1,0 +1,115 @@
+/* Custom Styles for AI Video Creation Studio */
+
+/* Custom Font settings */
+body {
+  font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Hide scrollbars while preserving functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom scrollbar for textareas and pre */
+pre::-webkit-scrollbar,
+textarea::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+pre::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+pre::-webkit-scrollbar-thumb:hover,
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Stepper Nav Button active and completed states */
+.step-nav-btn {
+  background-color: rgba(15, 23, 42, 0.6);
+  border-color: #1e293b;
+  color: #94a3b8;
+}
+
+.step-nav-btn:hover {
+  background-color: rgba(30, 41, 59, 0.8);
+  border-color: #334155;
+}
+
+.step-nav-btn .step-number {
+  background-color: #1e293b;
+  color: #64748b;
+  border: 1px solid #334155;
+}
+
+/* Active Step */
+.step-nav-btn.active {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(99, 102, 241, 0.05));
+  border-color: #6366f1;
+}
+
+.step-nav-btn.active .step-number {
+  background: #6366f1;
+  color: #ffffff;
+  border-color: #818cf8;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+}
+
+.step-nav-btn.active div > div:nth-child(2) {
+  color: #ffffff;
+}
+
+/* Completed Step */
+.step-nav-btn.completed .step-number {
+  background-color: #10b981;
+  color: #ffffff;
+  border-color: #34d399;
+}
+
+.step-nav-btn.completed {
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Subtle glowing borders */
+.glow-indigo {
+  box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.25);
+}
+
+/* Smooth fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-panel:not(.hidden) {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Toast animations */
+@keyframes toastIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-item {
+  animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

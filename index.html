@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 短片創作七階段教學工作台 | 互動式影片製作指南</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts: Noto Sans TC & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti for completion celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
+
+  <!-- TOP HEADER & PROGRESS BAR -->
+  <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+            <i class="fa-solid fa-clapperboard text-white text-xl"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <h1 class="text-xl sm:text-2xl font-black tracking-tight text-white">AI 短片創作工作台</h1>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">7 Steps Studio</span>
+            </div>
+            <p class="text-xs text-slate-400">互動式教學 · 提示詞生成器 · 鏡頭分鏡管理</p>
+          </div>
+        </div>
+
+        <!-- Project Controls & Quick Actions -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- Quick Mode Toggle Buttons -->
+          <div class="hidden md:flex bg-slate-800 p-1 rounded-lg border border-slate-700/80 text-xs font-medium">
+            <button id="view-mode-steps" onclick="switchViewMode('steps')" class="px-3 py-1.5 rounded-md transition-all bg-indigo-600 text-white shadow-sm flex items-center space-x-1">
+              <i class="fa-solid fa-list-check"></i>
+              <span>步驟流程</span>
+            </button>
+            <button id="view-mode-prompts" onclick="switchViewMode('prompts')" class="px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center space-x-1">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>提示詞庫</span>
+            </button>
+            <button id="view-mode-storyboard" onclick="switchViewMode('storyboard')" class="px-3 py-1.5 rounded-md transition-all text-slate-300 hover:text-white hover:bg-slate-700 flex items-center space-x-1">
+              <i class="fa-solid fa-table-cells"></i>
+              <span>分鏡工作台</span>
+            </button>
+          </div>
+
+          <!-- Load Demo Data Button -->
+          <button onclick="loadDemoData()" title="載入講師示範案例資料" class="p-2 sm:px-3 sm:py-1.5 text-xs rounded-lg border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-lightbulb text-amber-400"></i>
+            <span class="hidden sm:inline">載入示範案例</span>
+          </button>
+
+          <!-- Export Project Button -->
+          <button onclick="exportProjectModal()" title="匯出完整專案筆記與提示詞" class="p-2 sm:px-3 sm:py-1.5 text-xs rounded-lg border border-indigo-500/50 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 hover:text-white transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-download"></i>
+            <span class="hidden sm:inline">匯出專案</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Top Global Progress Bar -->
+      <div class="pb-3 pt-1">
+        <div class="flex items-center justify-between text-xs mb-1.5">
+          <div class="flex items-center space-x-2">
+            <span class="text-slate-400">創作完成進度</span>
+            <span id="overall-progress-text" class="font-bold text-indigo-400">0%</span>
+            <span id="step-task-count" class="text-slate-500 text-[11px]">(0 / 7 階段完成)</span>
+          </div>
+          <div class="flex items-center space-x-3 text-slate-400 text-[11px]">
+            <span class="hidden sm:inline"><i class="fa-regular fa-clock text-indigo-400 mr-1"></i>預計創作時長：約 20-30 分鐘</span>
+            <span class="text-emerald-400 font-medium flex items-center"><i class="fa-solid fa-circle-check mr-1 text-[10px]"></i>自動存檔</span>
+          </div>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700/50">
+          <div id="overall-progress-bar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-2 rounded-full transition-all duration-500 ease-out" style="width: 14.3%;"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- STEP NAVIGATION BAR (HORIZONTAL STEPPER) -->
+  <nav id="stepper-nav" class="bg-slate-900 border-b border-slate-800 shadow-sm overflow-x-auto no-scrollbar py-3 px-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between min-w-[760px] gap-2">
+      <!-- Step 1 -->
+      <button onclick="goToStep(1)" class="step-nav-btn flex-1 flex items-center p-2 rounded-xl border transition-all text-left group" data-step="1">
+        <div class="step-number w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm mr-2.5 transition shrink-0">1</div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-medium text-slate-400 group-hover:text-slate-300">階段 01</div>
+          <div class="text-xs font-bold text-slate-200 truncate">劇情與主題</div>
+        </div>
+      </button>
+
+      <!-- Step 2 -->
+      <button onclick="goToStep(2)" class="step-nav-btn flex-1 flex items-center p-2 rounded-xl border transition-all text-left group" data-step="2">
+        <div class="step-number w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm mr-2.5 transition shrink-0">2</div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-medium text-slate-400 group-hover:text-slate-300">階段 02</div>
+          <div class="text-xs font-bold text-slate-200 truncate">角色設定表</div>
+        </div>
+      </button>
+
+      <!-- Step 3 -->
+      <button onclick="goToStep(3)" class="step-nav-btn flex-1 flex items-center p-2 rounded-xl border transition-all text-left group" data-step="3">
+        <div class="step-number w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm mr-2.5 transition shrink-0">3</div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-medium text-slate-400 group-hover:text-slate-300">階段 03</div>
+          <div class="text-xs font-bold text-slate-200 truncate">分鏡腳本設計</div>
+        </div>
+      </button>
+
+      <!-- Step 4 -->
+      <button onclick="goToStep(4)" class="step-nav-btn flex-1 flex items-center p-2 rounded-xl border transition-all text-left group" data-step="4">
+        <div class="step-number w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm mr-2.5 transition shrink-0">4</div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-medium text-slate-400 group-hover:text-slate-300">階段 04</div>
+          <div class="text-xs font-bold text-slate-200 truncate">AI 圖像生成</div>
+        </div>
+      </button>
+
+      <!-- Step 5 -->
+      <button onclick="goToStep(5)" class="step-nav-btn flex-1 flex items-center p-2 rounded-xl border transition-all text-left group" data-step="5">
+        <div class="step-number w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm mr-2.5 transition shrink-0">5</div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-medium text-slate-400 group-hover:text-slate-300">階段 05</div>
+          <div class="text-xs font-bold text-slate-200 truncate">AI 動態影片</div>
+        </div>
+      </button>
+
+      <!-- Step 6 -->
+      <button onclick="goToStep(6)" class="step-nav-btn flex-1 flex items-center p-2 rounded-xl border transition-all text-left group" data-step="6">
+        <div class="step-number w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm mr-2.5 transition shrink-0">6</div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-medium text-slate-400 group-hover:text-slate-300">階段 06</div>
+          <div class="text-xs font-bold text-slate-200 truncate">聲音與配樂</div>
+        </div>
+      </button>
+
+      <!-- Step 7 -->
+      <button onclick="goToStep(7)" class="step-nav-btn flex-1 flex items-center p-2 rounded-xl border transition-all text-left group" data-step="7">
+        <div class="step-number w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm mr-2.5 transition shrink-0">7</div>
+        <div class="min-w-0">
+          <div class="text-[11px] font-medium text-slate-400 group-hover:text-slate-300">階段 07</div>
+          <div class="text-xs font-bold text-slate-200 truncate">剪輯與整合</div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================== -->
+    <!-- VIEW MODE 1: STEP-BY-STEP WIZARD (DEFAULT) -->
+    <!-- ========================================== -->
+    <div id="view-steps-container">
+
+      <!-- ==================================================== -->
+      <!-- STEP 1: 劇情發想與主題設定 -->
+      <!-- ==================================================== -->
+      <section id="step-panel-1" class="step-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column: Instructional Guide & Checkpoints -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+              
+              <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">步驟一</span>
+                <span class="text-slate-400 text-xs">Ideation & Concept</span>
+              </div>
+              <h2 class="text-2xl font-black text-white mb-3">劇情發想與主題設定</h2>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                利用 AI 提出故事主題、角色設定、劇情大綱及影片風格。在此階段，我們會藉由結構化提示詞，讓 AI 為我們發想 3 套具體劇本方案，選出最動人的一組作為後續製作基底。
+              </p>
+
+              <!-- Teaching Keypoints -->
+              <div class="space-y-3 mb-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">階段重點要訣</h3>
+                <div class="bg-slate-800/60 rounded-xl p-3.5 border border-slate-700/60 text-xs space-y-2 text-slate-300">
+                  <div class="flex items-start space-x-2">
+                    <i class="fa-solid fa-bullseye text-indigo-400 mt-0.5"></i>
+                    <span><strong>鎖定秒數長度：</strong>短影音建議控制在 15-30 秒內，情節聚焦單一情感高潮。</span>
+                  </div>
+                  <div class="flex items-start space-x-2">
+                    <i class="fa-solid fa-palette text-purple-400 mt-0.5"></i>
+                    <span><strong>明確美術風格：</strong>如「新海誠風」、「吉卜力動漫」、「寫實電影光影」等，風格貫穿全片。</span>
+                  </div>
+                  <div class="flex items-start space-x-2">
+                    <i class="fa-solid fa-users text-pink-400 mt-0.5"></i>
+                    <span><strong>角色關係張力：</strong>設定 1~2 位主角（例如：少年與老拉布拉多），關係越具體越感人。</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Step Checklist -->
+              <div class="border-t border-slate-800 pt-5">
+                <h3 class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+                  <span>執行進度檢核表</span>
+                  <span id="chk-step1-count" class="text-indigo-400 font-mono text-xs">0/3</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-300">
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(1)" class="step1-chk w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-slate-900 border-slate-700">
+                    <span>決定影片秒數、情緒調性與美術風格</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(1)" class="step1-chk w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-slate-900 border-slate-700">
+                    <span>送出提示詞讓 AI 生成 3 套劇情方案</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(1)" class="step1-chk w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 bg-slate-900 border-slate-700">
+                    <span>選定 1 個方案並記錄下方筆記區</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Story Selected Memo Box -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs font-bold text-slate-300 flex items-center space-x-1.5">
+                  <i class="fa-solid fa-bookmark text-amber-400"></i>
+                  <span>我選定的方案大綱（自動連動後續步驟）</span>
+                </label>
+                <span class="text-[10px] text-slate-500">可將 AI 生成的結果貼於此</span>
+              </div>
+              <textarea id="project-story-synopsis" oninput="saveUserData()" placeholder="例如：方案 1【草地上的約定】少年在金色向日葵花田與老拉布拉多追逐奔跑，夕陽下的告別與重逢..." rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"></textarea>
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Prompt Generator -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative">
+              <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i>
+                  <h3 class="font-bold text-white text-base">提示詞生成器：劇情發想提示詞</h3>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">課堂提示詞 1</span>
+              </div>
+
+              <!-- Form Parameters -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">影片時長（秒）</label>
+                  <input type="text" id="p1-duration" value="30" oninput="updatePrompt1()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">建議方案數量與基調</label>
+                  <input type="text" id="p1-tone" value="三個溫馨感人" oninput="updatePrompt1()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">指定美術風格</label>
+                  <input type="text" id="p1-style" value="新海誠風格" oninput="updatePrompt1()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">影片類型</label>
+                  <input type="text" id="p1-type" value="動漫" oninput="updatePrompt1()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">主角 1</label>
+                  <input type="text" id="p1-char1" value="少年" oninput="updatePrompt1()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">主角 2</label>
+                  <input type="text" id="p1-char2" value="老拉布拉多" oninput="updatePrompt1()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">指定必有場景描述</label>
+                  <input type="text" id="p1-scene" value="其中要有草原的場景" oninput="updatePrompt1()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                </div>
+              </div>
+
+              <!-- Quick Presets -->
+              <div class="flex items-center space-x-2 mb-4 overflow-x-auto pb-1 text-[11px]">
+                <span class="text-slate-500 shrink-0">快速範本：</span>
+                <button type="button" onclick="setPreset1('新海誠動漫', '30', '三個溫馨感人', '新海誠風格', '動漫', '少年', '老拉布拉多', '其中要有草原的場景')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition whitespace-nowrap border border-slate-700">新海誠 × 少年與狗</button>
+                <button type="button" onclick="setPreset1('吉卜力冒險', '45', '兩個奇幻冒險', '吉卜力手繪風', '奇幻動畫', '魔法少女', '會說話的黑貓', '必須有浮空島與魔法森林場景')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition whitespace-nowrap border border-slate-700">吉卜力 × 奇幻冒險</button>
+                <button type="button" onclick="setPreset1('賽博龐克科幻', '30', '三個高節奏反轉', '賽博龐克電影感', '科幻微電影', '仿生人偵探', '機械導盲犬', '必須包含雨夜霓虹都市天台')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md transition whitespace-nowrap border border-slate-700">賽博龐克 × 科幻懸疑</button>
+              </div>
+
+              <!-- Live Prompt Code Box -->
+              <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-indigo-200 leading-relaxed shadow-inner">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-[11px] text-slate-400">
+                  <span class="flex items-center space-x-1.5"><i class="fa-regular fa-copy text-indigo-400"></i><span>即時生成提示詞 (可直接複製到 ChatGPT/Claude)</span></span>
+                  <span class="text-[10px] text-slate-500">Live Preview</span>
+                </div>
+                <pre id="prompt-output-1" class="whitespace-pre-wrap select-all"></pre>
+
+                <!-- Copy & Action Bar -->
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center space-x-2">
+                    <button onclick="copyToClipboard('prompt-output-1', this)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold text-xs shadow-lg shadow-indigo-600/30 transition flex items-center space-x-1.5">
+                      <i class="fa-regular fa-clipboard"></i>
+                      <span>一鍵複製提示詞</span>
+                    </button>
+                    <button onclick="resetPrompt1()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 rounded-lg text-xs transition">
+                      恢復預設
+                    </button>
+                  </div>
+                  
+                  <!-- External AI Model Links -->
+                  <div class="flex items-center space-x-1.5 text-xs">
+                    <span class="text-slate-500 text-[11px]">快速發送至：</span>
+                    <a href="https://chatgpt.com/" target="_blank" rel="noopener" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-400 rounded text-[11px] transition">ChatGPT ↗</a>
+                    <a href="https://claude.ai/" target="_blank" rel="noopener" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded text-[11px] transition">Claude ↗</a>
+                    <a href="https://gemini.google.com/" target="_blank" rel="noopener" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 rounded text-[11px] transition">Gemini ↗</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- STEP 2: 角色設定與 Character Sheet -->
+      <!-- ==================================================== -->
+      <section id="step-panel-2" class="step-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column: Instructional Guide & Checkpoints -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">步驟二</span>
+                <span class="text-slate-400 text-xs">Character Sheet</span>
+              </div>
+              <h2 class="text-2xl font-black text-white mb-3">角色設定與 Character Sheet</h2>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                建立角色設定表，包含<strong>正面、45 度側面、側面及背面</strong>四個視角。AI 生成影片最常遇到的問題是「角色在不同鏡頭長相不一致」，角色設定表就是固定容貌與服裝的唯一憑證。
+              </p>
+
+              <!-- Character Sheet 4-view Diagram -->
+              <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6">
+                <div class="text-xs font-bold text-slate-300 mb-2 flex items-center justify-between">
+                  <span>四視角設定規格</span>
+                  <span class="text-[10px] text-purple-400 font-mono">16:9 白色背景</span>
+                </div>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                  <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">
+                    <div class="text-xl text-purple-400 mb-1"><i class="fa-solid fa-user"></i></div>
+                    <div class="text-[11px] font-bold text-white">正面</div>
+                    <div class="text-[10px] text-slate-400">Front View</div>
+                  </div>
+                  <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">
+                    <div class="text-xl text-purple-400 mb-1"><i class="fa-solid fa-user" style="transform: rotate(15deg);"></i></div>
+                    <div class="text-[11px] font-bold text-white">45度側面</div>
+                    <div class="text-[10px] text-slate-400">3/4 View</div>
+                  </div>
+                  <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">
+                    <div class="text-xl text-purple-400 mb-1"><i class="fa-solid fa-user-tag"></i></div>
+                    <div class="text-[11px] font-bold text-white">側面</div>
+                    <div class="text-[10px] text-slate-400">Profile</div>
+                  </div>
+                  <div class="bg-slate-900 border border-slate-800 p-2.5 rounded-lg">
+                    <div class="text-xl text-purple-400 mb-1"><i class="fa-solid fa-user-secret"></i></div>
+                    <div class="text-[11px] font-bold text-white">背面</div>
+                    <div class="text-[10px] text-slate-400">Back View</div>
+                  </div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2.5 leading-normal">
+                  <i class="fa-solid fa-circle-info text-indigo-400 mr-1"></i>
+                  技巧提示：使用「白色背景、均勻光線」可讓後續作為墊圖（Image-to-Image / Lora）時去背與特徵擷取最精準。
+                </p>
+              </div>
+
+              <!-- Interactive Step Checklist -->
+              <div class="border-t border-slate-800 pt-5">
+                <h3 class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+                  <span>執行進度檢核表</span>
+                  <span id="chk-step2-count" class="text-purple-400 font-mono text-xs">0/3</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-300">
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(2)" class="step2-chk w-4 h-4 rounded text-purple-600 focus:ring-purple-500 bg-slate-900 border-slate-700">
+                    <span>生成主角 1（例如：少年）的四全身視角設定表</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(2)" class="step2-chk w-4 h-4 rounded text-purple-600 focus:ring-purple-500 bg-slate-900 border-slate-700">
+                    <span>若有第二主角（例如：老拉布拉多），同樣生成設定圖</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(2)" class="step2-chk w-4 h-4 rounded text-purple-600 focus:ring-purple-500 bg-slate-900 border-slate-700">
+                    <span>保存高解析度角色圖作為後續各鏡頭的參考圖（Reference）</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Prompt Generator -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative">
+              <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-id-card-clip text-purple-400"></i>
+                  <h3 class="font-bold text-white text-base">提示詞生成器：角色設定表 Character Sheet</h3>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">課堂提示詞 3</span>
+              </div>
+
+              <!-- Form Parameters -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">目標角色名稱或描述</label>
+                  <input type="text" id="p3-char" value="少年" oninput="updatePrompt3()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">視覺呈現類型</label>
+                  <select id="p3-medium" onchange="updatePrompt3()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500 transition">
+                    <option value="動漫" selected>動漫 (Anime Style)</option>
+                    <option value="真人">真人 (Photorealistic)</option>
+                    <option value="3D 動畫">3D 動畫 (Pixar/Disney 3D)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">畫面長寬比</label>
+                  <input type="text" id="p3-aspect" value="16:9" oninput="updatePrompt3()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">背景與光線限制</label>
+                  <input type="text" id="p3-lighting" value="白色背景，均勻光線" oninput="updatePrompt3()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500 transition">
+                </div>
+              </div>
+
+              <!-- Live Prompt Code Box -->
+              <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-purple-200 leading-relaxed shadow-inner">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-[11px] text-slate-400">
+                  <span class="flex items-center space-x-1.5"><i class="fa-regular fa-copy text-purple-400"></i><span>即時生成提示詞</span></span>
+                  <span class="text-[10px] text-slate-500">Character Sheet Prompt</span>
+                </div>
+                <pre id="prompt-output-3" class="whitespace-pre-wrap select-all"></pre>
+
+                <!-- Copy & Action Bar -->
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+                  <div class="flex items-center space-x-2">
+                    <button onclick="copyToClipboard('prompt-output-3', this)" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-bold text-xs shadow-lg shadow-purple-600/30 transition flex items-center space-x-1.5">
+                      <i class="fa-regular fa-clipboard"></i>
+                      <span>一鍵複製提示詞</span>
+                    </button>
+                    <button onclick="setPrompt3Dog()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs transition">
+                      切換為【老拉布拉多】
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- STEP 3: 分鏡腳本設計 -->
+      <!-- ==================================================== -->
+      <section id="step-panel-3" class="step-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column: Instructional Guide & Checkpoints -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-sky-500/20 text-sky-400 border border-sky-500/30">步驟三</span>
+                <span class="text-slate-400 text-xs">Storyboard Design</span>
+              </div>
+              <h2 class="text-2xl font-black text-white mb-3">分鏡腳本設計</h2>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                將劇情拆解為多個鏡頭，設定<strong>景別（遠景/中景/特寫）、畫面描述、字幕、台詞及時長</strong>。AI 還能直接為我們產出每個鏡頭的生圖提示詞（Image Prompt）與動態提示詞（Motion Prompt）。
+              </p>
+
+              <!-- Teaching Keypoints -->
+              <div class="space-y-3 mb-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">分鏡結構四要素</h3>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/60">
+                    <span class="text-sky-400 font-bold block mb-1">1. 景別與鏡頭類型</span>
+                    <span class="text-slate-400 text-[11px]">遠景建構環境、中景演繹互動、特寫捕捉情感。</span>
+                  </div>
+                  <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/60">
+                    <span class="text-sky-400 font-bold block mb-1">2. 畫面細部描述</span>
+                    <span class="text-slate-400 text-[11px]">角色動作、光影、天氣、微風吹動等動態細節。</span>
+                  </div>
+                  <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/60">
+                    <span class="text-sky-400 font-bold block mb-1">3. 字幕或台詞</span>
+                    <span class="text-slate-400 text-[11px]">短而精準，留白給背景音樂與畫面傳達情緒。</span>
+                  </div>
+                  <div class="bg-slate-800/60 p-3 rounded-lg border border-slate-700/60">
+                    <span class="text-sky-400 font-bold block mb-1">4. 秒數分配</span>
+                    <span class="text-slate-400 text-[11px]">單鏡頭約 3~5 秒，整體節奏明快順暢。</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Step Checklist -->
+              <div class="border-t border-slate-800 pt-5">
+                <h3 class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+                  <span>執行進度檢核表</span>
+                  <span id="chk-step3-count" class="text-sky-400 font-mono text-xs">0/3</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-300">
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(3)" class="step3-chk w-4 h-4 rounded text-sky-600 focus:ring-sky-500 bg-slate-900 border-slate-700">
+                    <span>複製分鏡設計提示詞給 AI 拆解鏡頭</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(3)" class="step3-chk w-4 h-4 rounded text-sky-600 focus:ring-sky-500 bg-slate-900 border-slate-700">
+                    <span>取得中英文對照生圖與影片提示詞</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(3)" class="step3-chk w-4 h-4 rounded text-sky-600 focus:ring-sky-500 bg-slate-900 border-slate-700">
+                    <span>確認鏡頭總秒數符合預期（如 30 秒）</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Prompt Generator & Storyboard Jump -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative">
+              <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-film text-sky-400"></i>
+                  <h3 class="font-bold text-white text-base">提示詞生成器：分鏡設計提示詞</h3>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">課堂提示詞 2</span>
+              </div>
+
+              <!-- Form Parameters -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">代入方案名稱</label>
+                  <input type="text" id="p2-scheme" value="方案1：草地上的約定" oninput="updatePrompt2()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">建議分段鏡頭數</label>
+                  <input type="text" id="p2-shots" value="6" oninput="updatePrompt2()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500 transition">
+                </div>
+              </div>
+
+              <!-- Live Prompt Code Box -->
+              <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-sky-200 leading-relaxed shadow-inner">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-[11px] text-slate-400">
+                  <span class="flex items-center space-x-1.5"><i class="fa-regular fa-copy text-sky-400"></i><span>即時生成提示詞</span></span>
+                  <span class="text-[10px] text-slate-500">Storyboard Prompt</span>
+                </div>
+                <pre id="prompt-output-2" class="whitespace-pre-wrap select-all"></pre>
+
+                <!-- Copy & Action Bar -->
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+                  <button onclick="copyToClipboard('prompt-output-2', this)" class="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-bold text-xs shadow-lg shadow-sky-600/30 transition flex items-center space-x-1.5">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>一鍵複製提示詞</span>
+                  </button>
+                  <button onclick="switchViewMode('storyboard')" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-sky-300 rounded-lg text-xs transition flex items-center space-x-1">
+                    <i class="fa-solid fa-table-list mr-1"></i>
+                    <span>開啟「互動分鏡工作台」編輯鏡頭</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- STEP 4: AI 圖像生成 -->
+      <!-- ==================================================== -->
+      <section id="step-panel-4" class="step-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column: Instructional Guide & Checkpoints -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">步驟四</span>
+                <span class="text-slate-400 text-xs">Image Generation</span>
+              </div>
+              <h2 class="text-2xl font-black text-white mb-3">AI 圖像生成</h2>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                依照各鏡頭提示詞，生成符合角色與場景設定的圖片。在此步驟中，除了產出各分鏡的首幀圖片之外，我們也會特別製作一張高品質的<strong>「影片片頭海報圖」</strong>。
+              </p>
+
+              <!-- Recommended AI Image Tools -->
+              <div class="space-y-3 mb-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">推薦主流圖像生成工具</h3>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <a href="https://midjourney.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-emerald-400 transition">Midjourney v6</div>
+                      <div class="text-[10px] text-slate-400">光影氛圍感最強</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://flux1.art" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-emerald-400 transition">Flux.1</div>
+                      <div class="text-[10px] text-slate-400">文字與人體細節極佳</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://leonardo.ai" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-emerald-400 transition">Leonardo AI</div>
+                      <div class="text-[10px] text-slate-400">角色一致性墊圖利器</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://chatgpt.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-emerald-400 transition">DALL-E 3</div>
+                      <div class="text-[10px] text-slate-400">提示詞理解最直覺</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Interactive Step Checklist -->
+              <div class="border-t border-slate-800 pt-5">
+                <h3 class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+                  <span>執行進度檢核表</span>
+                  <span id="chk-step4-count" class="text-emerald-400 font-mono text-xs">0/3</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-300">
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(4)" class="step4-chk w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 bg-slate-900 border-slate-700">
+                    <span>生成並選定片頭主海報圖（包含中文主標題）</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(4)" class="step4-chk w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 bg-slate-900 border-slate-700">
+                    <span>使用角色設定表當作參考墊圖，生成各鏡頭底圖</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(4)" class="step4-chk w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 bg-slate-900 border-slate-700">
+                    <span>確認所有鏡頭色調、服裝與角色面部特徵一致</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Column: Poster Prompt Generator -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative">
+              <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-image text-emerald-400"></i>
+                  <h3 class="font-bold text-white text-base">提示詞生成器：影片片頭海報提示詞</h3>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">課堂提示詞 4</span>
+              </div>
+
+              <!-- Form Parameters -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">海報比例</label>
+                  <select id="p4-ratio" onchange="updatePrompt4()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                    <option value="16:9">16:9 (橫式劇院/YouTube)</option>
+                    <option value="9:16">9:16 (直式短影音/Reels/TikTok)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">海報中文標題</label>
+                  <input type="text" id="p4-title" value="時光的微風" oninput="updatePrompt4()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">角色 1 參考依據</label>
+                  <input type="text" id="p4-char1-ref" value="上傳圖片1為角色1的樣貌" oninput="updatePrompt4()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">角色 2 參考依據</label>
+                  <input type="text" id="p4-char2-ref" value="上傳圖片2為角色2的樣貌" oninput="updatePrompt4()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 transition">
+                </div>
+              </div>
+
+              <!-- Live Prompt Code Box -->
+              <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-emerald-200 leading-relaxed shadow-inner">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-[11px] text-slate-400">
+                  <span class="flex items-center space-x-1.5"><i class="fa-regular fa-copy text-emerald-400"></i><span>即時生成提示詞</span></span>
+                  <span class="text-[10px] text-slate-500">Poster Prompt</span>
+                </div>
+                <pre id="prompt-output-4" class="whitespace-pre-wrap select-all"></pre>
+
+                <!-- Copy & Action Bar -->
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+                  <button onclick="copyToClipboard('prompt-output-4', this)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold text-xs shadow-lg shadow-emerald-600/30 transition flex items-center space-x-1.5">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>一鍵複製提示詞</span>
+                  </button>
+                  <span class="text-[11px] text-slate-400">
+                    <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i>小技巧：生圖時記得開啟 Image-to-Image 墊入剛才生成的角色設定表！
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- STEP 5: AI 動態影片生成 -->
+      <!-- ==================================================== -->
+      <section id="step-panel-5" class="step-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column: Instructional Guide & Checkpoints -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">步驟五</span>
+                <span class="text-slate-400 text-xs">Motion Video</span>
+              </div>
+              <h2 class="text-2xl font-black text-white mb-3">AI 動態影片生成</h2>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                將圖像與動態提示詞結合，生成各段影片。利用圖生影片（Image-to-Video），指定運鏡方式與運動強度，讓靜態畫面轉化為呼吸般的電影鏡頭。
+              </p>
+
+              <!-- Recommended AI Video Tools -->
+              <div class="space-y-3 mb-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">推薦主流影片生成工具</h3>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <a href="https://klingai.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-amber-400 transition">快手可靈 Kling</div>
+                      <div class="text-[10px] text-slate-400">大幅度動作表現力極強</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://runwayml.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-amber-400 transition">Runway Gen-3</div>
+                      <div class="text-[10px] text-slate-400">電影級質感與運鏡控制</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://lumalabs.ai/dream-machine" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-amber-400 transition">Luma Dream Machine</div>
+                      <div class="text-[10px] text-slate-400">流暢過渡與首尾幀</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://hailuoai.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-amber-400 transition">海螺 AI / MiniMax</div>
+                      <div class="text-[10px] text-slate-400">物理運動規律穩定</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Interactive Step Checklist -->
+              <div class="border-t border-slate-800 pt-5">
+                <h3 class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+                  <span>執行進度檢核表</span>
+                  <span id="chk-step5-count" class="text-amber-400 font-mono text-xs">0/3</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-300">
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(5)" class="step5-chk w-4 h-4 rounded text-amber-600 focus:ring-amber-500 bg-slate-900 border-slate-700">
+                    <span>將分鏡圖匯入 AI 影片工具（Image-to-Video）</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(5)" class="step5-chk w-4 h-4 rounded text-amber-600 focus:ring-amber-500 bg-slate-900 border-slate-700">
+                    <span>加入運鏡提示詞（例如：Slow pan, gentle breeze）</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(5)" class="step5-chk w-4 h-4 rounded text-amber-600 focus:ring-amber-500 bg-slate-900 border-slate-700">
+                    <span>生成並下載各鏡頭影片片段（約 4~5 秒）</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Column: Interactive Motion Helper -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative">
+              <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-video text-amber-400"></i>
+                  <h3 class="font-bold text-white text-base">運鏡提示詞速查與組合器 (Camera Motion Helper)</h3>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">動態生成助手</span>
+              </div>
+
+              <!-- Quick Motion Buttons -->
+              <div class="my-5 space-y-3">
+                <label class="block text-xs font-semibold text-slate-400">點擊標籤快速加入運鏡詞彙：</label>
+                <div class="flex flex-wrap gap-2 text-xs">
+                  <button type="button" onclick="appendMotionTag('Slow push-in zoom on subject face')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg border border-slate-700 transition">
+                    + 緩慢推進特寫 (Push-in)
+                  </button>
+                  <button type="button" onclick="appendMotionTag('Smooth camera pan from left to right')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg border border-slate-700 transition">
+                    + 平滑向右搖鏡 (Pan Right)
+                  </button>
+                  <button type="button" onclick="appendMotionTag('Drone aerial shot rising slowly over grassland')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg border border-slate-700 transition">
+                    + 空拍升起俯瞰 (Drone Rise)
+                  </button>
+                  <button type="button" onclick="appendMotionTag('Gentle summer breeze blowing hair and grass')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg border border-slate-700 transition">
+                    + 微風吹動髮絲草浪 (Gentle Breeze)
+                  </button>
+                  <button type="button" onclick="appendMotionTag('Dog wagging tail happily looking at boy')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg border border-slate-700 transition">
+                    + 狗狗歡快搖尾互動 (Dog Tail Wag)
+                  </button>
+                  <button type="button" onclick="appendMotionTag('Cinematic 24fps, golden hour sunlight flare')" class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 rounded-lg border border-slate-700 transition">
+                    + 夕陽金色逆光光暈 (Sunlight Flare)
+                  </button>
+                </div>
+              </div>
+
+              <!-- Composed Motion Textarea -->
+              <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-[11px] text-slate-400">
+                  <span>自訂影片動態提示詞組合 (可直接複製至 Kling / Runway / Luma)</span>
+                  <button onclick="clearMotionInput()" class="text-slate-500 hover:text-slate-300 text-xs">清空</button>
+                </div>
+                <textarea id="custom-motion-prompt" rows="3" placeholder="點擊上方按鈕或自行輸入動態描述..." class="w-full bg-transparent text-amber-200 text-xs font-mono focus:outline-none resize-none leading-relaxed"></textarea>
+                
+                <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between">
+                  <button onclick="copyToClipboard('custom-motion-prompt', this)" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-bold text-xs shadow-lg shadow-amber-600/30 transition flex items-center space-x-1.5">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>複製動態提示詞</span>
+                  </button>
+                  <span class="text-[11px] text-slate-400">運動強度建議值 (Motion Strength)：<strong>3 ~ 5</strong> 避免畫面崩壞</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- STEP 6: 聲音與配樂製作 -->
+      <!-- ==================================================== -->
+      <section id="step-panel-6" class="step-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column: Instructional Guide & Checkpoints -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">步驟六</span>
+                <span class="text-slate-400 text-xs">Audio & BGM</span>
+              </div>
+              <h2 class="text-2xl font-black text-white mb-3">聲音與配樂製作</h2>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                加入<strong>角色配音、旁白及無人聲背景音樂（BGM）</strong>。音樂是短片的靈魂，無人聲配樂能襯托台詞的情感厚度，並引導觀眾情緒起伏。
+              </p>
+
+              <!-- Recommended AI Audio Tools -->
+              <div class="space-y-3 mb-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">推薦主流音效與音樂工具</h3>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <a href="https://suno.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-rose-400 transition">Suno AI (v3.5 / v4)</div>
+                      <div class="text-[10px] text-slate-400">強大純音樂 [Instrumental]</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://udio.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-rose-400 transition">Udio</div>
+                      <div class="text-[10px] text-slate-400">細膩電影原聲帶管弦樂</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://elevenlabs.io" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-rose-400 transition">ElevenLabs</div>
+                      <div class="text-[10px] text-slate-400">擬真人聲旁白與角色配音</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                  <a href="https://capcut.com" target="_blank" rel="noopener" class="bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/80 transition flex items-center justify-between group">
+                    <div>
+                      <div class="font-bold text-white group-hover:text-rose-400 transition">剪映 / CapCut 語音</div>
+                      <div class="text-[10px] text-slate-400">快速文字轉中文旁白</div>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-500"></i>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Interactive Step Checklist -->
+              <div class="border-t border-slate-800 pt-5">
+                <h3 class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+                  <span>執行進度檢核表</span>
+                  <span id="chk-step6-count" class="text-rose-400 font-mono text-xs">0/3</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-300">
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(6)" class="step6-chk w-4 h-4 rounded text-rose-600 focus:ring-rose-500 bg-slate-900 border-slate-700">
+                    <span>生成無人聲背景音樂（純音樂 Instrumental）</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(6)" class="step6-chk w-4 h-4 rounded text-rose-600 focus:ring-rose-500 bg-slate-900 border-slate-700">
+                    <span>產生角色對白語音或旁白聲音檔</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(6)" class="step6-chk w-4 h-4 rounded text-rose-600 focus:ring-rose-500 bg-slate-900 border-slate-700">
+                    <span>準備環境音效（例如：風聲、犬吠、腳步聲）</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Column: BGM Prompt Generator -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative">
+              <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                  <i class="fa-solid fa-music text-rose-400"></i>
+                  <h3 class="font-bold text-white text-base">提示詞生成器：AI 背景配樂提示詞</h3>
+                </div>
+                <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">課堂提示詞 5</span>
+              </div>
+
+              <!-- Form Parameters -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-5">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">影片名稱</label>
+                  <input type="text" id="p5-name" value="時光的微風" oninput="updatePrompt5()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500 transition">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">配樂時長（秒）與無人聲要求</label>
+                  <input type="text" id="p5-duration" value="30" oninput="updatePrompt5()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500 transition">
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">劇情大綱摘要</label>
+                  <input type="text" id="p5-plot" value="少年與老拉布拉多在陽光草地上奔跑互動，回憶與成長的溫馨感人旅程" oninput="updatePrompt5()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500 transition">
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-xs font-semibold text-slate-400 mb-1.5">影片風格與配樂樂器特色</label>
+                  <input type="text" id="p5-style" value="新海誠風格動漫、清澈溫暖的鋼琴、悠揚小提琴弦樂、無人聲、治癒感人" oninput="updatePrompt5()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500 transition">
+                </div>
+              </div>
+
+              <!-- Live Prompt Code Box -->
+              <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800 font-mono text-xs text-rose-200 leading-relaxed shadow-inner">
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-800/80 text-[11px] text-slate-400">
+                  <span class="flex items-center space-x-1.5"><i class="fa-regular fa-copy text-rose-400"></i><span>即時生成提示詞</span></span>
+                  <span class="text-[10px] text-slate-500">BGM Prompt</span>
+                </div>
+                <pre id="prompt-output-5" class="whitespace-pre-wrap select-all"></pre>
+
+                <!-- Copy & Action Bar -->
+                <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2">
+                  <button onclick="copyToClipboard('prompt-output-5', this)" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg font-bold text-xs shadow-lg shadow-rose-600/30 transition flex items-center space-x-1.5">
+                    <i class="fa-regular fa-clipboard"></i>
+                    <span>一鍵複製提示詞</span>
+                  </button>
+                  <span class="text-[11px] text-slate-400">在 Suno 生成時，務必勾選 <strong>Instrumental (純音樂)</strong> 開關！</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== -->
+      <!-- STEP 7: 影片剪輯與整合 -->
+      <!-- ==================================================== -->
+      <section id="step-panel-7" class="step-panel hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          <!-- Left Column: Instructional Guide & Checkpoints -->
+          <div class="lg:col-span-5 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+              <div class="flex items-center space-x-3 mb-4">
+                <span class="px-3 py-1 rounded-md text-xs font-bold bg-teal-500/20 text-teal-400 border border-teal-500/30">步驟七</span>
+                <span class="text-slate-400 text-xs">Video Assembly & Editing</span>
+              </div>
+              <h2 class="text-2xl font-black text-white mb-3">影片剪輯與整合</h2>
+              <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                <strong>合併影片、調整順序、加入轉場，完成影音作品。</strong>將各段 AI 影片素材置入剪輯軟體（如剪映 CapCut、Premiere Pro、DaVinci），依照分鏡時間線組合並對齊背景音樂節奏點。
+              </p>
+
+              <!-- Editing Master SOP -->
+              <div class="space-y-3 mb-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">影片剪輯 5 步黃金 SOP</h3>
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3 text-xs">
+                  <div class="flex items-start space-x-2.5">
+                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 font-bold flex items-center justify-center shrink-0 text-[11px]">1</span>
+                    <div>
+                      <strong class="text-white">粗剪排序 (Rough Cut)：</strong>
+                      <span class="text-slate-400">依分鏡腳本 01 到 06 將影片素材排在主軌道。</span>
+                    </div>
+                  </div>
+                  <div class="flex items-start space-x-2.5">
+                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 font-bold flex items-center justify-center shrink-0 text-[11px]">2</span>
+                    <div>
+                      <strong class="text-white">節奏對位 (Beat Match)：</strong>
+                      <span class="text-slate-400">匯入 BGM，配合鼓點與鋼琴重音微調鏡頭切換點。</span>
+                    </div>
+                  </div>
+                  <div class="flex items-start space-x-2.5">
+                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 font-bold flex items-center justify-center shrink-0 text-[11px]">3</span>
+                    <div>
+                      <strong class="text-white">聲音平衡 (Audio Ducking)：</strong>
+                      <span class="text-slate-400">旁白或台詞出現時，自動將 BGM 音量降低 20%~30%。</span>
+                    </div>
+                  </div>
+                  <div class="flex items-start space-x-2.5">
+                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 font-bold flex items-center justify-center shrink-0 text-[11px]">4</span>
+                    <div>
+                      <strong class="text-white">轉場與特效 (Transitions)：</strong>
+                      <span class="text-slate-400">加入柔和淡入淡出（Cross Dissolve），保持流暢。</span>
+                    </div>
+                  </div>
+                  <div class="flex items-start space-x-2.5">
+                    <span class="w-5 h-5 rounded-full bg-teal-500/20 text-teal-400 font-bold flex items-center justify-center shrink-0 text-[11px]">5</span>
+                    <div>
+                      <strong class="text-white">字幕與片頭 (Title & Subs)：</strong>
+                      <span class="text-slate-400">加入片頭海報、標題動態與全片字幕，完成輸出！</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Step Checklist -->
+              <div class="border-t border-slate-800 pt-5">
+                <h3 class="text-xs font-bold text-slate-300 mb-3 flex items-center justify-between">
+                  <span>執行進度檢核表</span>
+                  <span id="chk-step7-count" class="text-teal-400 font-mono text-xs">0/3</span>
+                </h3>
+                <div class="space-y-2.5 text-xs text-slate-300">
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(7)" class="step7-chk w-4 h-4 rounded text-teal-600 focus:ring-teal-500 bg-slate-900 border-slate-700">
+                    <span>影片順序與節奏點調整完成</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(7)" class="step7-chk w-4 h-4 rounded text-teal-600 focus:ring-teal-500 bg-slate-900 border-slate-700">
+                    <span>字幕與台詞配音校對無誤</span>
+                  </label>
+                  <label class="flex items-center space-x-2.5 cursor-pointer bg-slate-800/40 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition">
+                    <input type="checkbox" onchange="updateStepProgress(7)" class="step7-chk w-4 h-4 rounded text-teal-600 focus:ring-teal-500 bg-slate-900 border-slate-700">
+                    <span>匯出高畫質成品（1080p / 4K MP4）</span>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Column: Final Completion & Summary -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl text-center relative overflow-hidden">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 mx-auto flex items-center justify-center text-white text-3xl mb-4 shadow-lg shadow-teal-500/20">
+                <i class="fa-solid fa-trophy"></i>
+              </div>
+              <h3 class="text-xl font-black text-white mb-2">恭喜！您已掌握 AI 短片創作全流程</h3>
+              <p class="text-xs text-slate-400 max-w-md mx-auto mb-6">
+                從劇情構思、角色設定表、分鏡腳本，到生圖、動態影片、BGM配樂與最終剪輯，您已具備完整的 AI 影音創作架構！
+              </p>
+
+              <!-- Big Finish Trigger Button -->
+              <div class="flex flex-wrap items-center justify-center gap-3">
+                <button onclick="celebrateSuccess()" class="px-6 py-3 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-white font-bold text-sm rounded-xl shadow-lg shadow-teal-500/30 transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+                  <i class="fa-solid fa-sparkles"></i>
+                  <span>釋放慶祝煙火 🎉</span>
+                </button>
+                <button onclick="exportProjectModal()" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm rounded-xl border border-slate-700 transition flex items-center space-x-2">
+                  <i class="fa-solid fa-file-export text-teal-400"></i>
+                  <span>匯出完整專案筆記</span>
+                </button>
+              </div>
+
+              <!-- Workflow Summary Cards -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8 pt-6 border-t border-slate-800 text-left">
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
+                  <span class="text-[10px] text-indigo-400 font-bold block mb-1">階段 1~2</span>
+                  <span class="text-xs font-semibold text-slate-200">文字大綱與角色</span>
+                  <span class="text-[10px] text-slate-500 block mt-1">ChatGPT + Character Sheet</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
+                  <span class="text-[10px] text-sky-400 font-bold block mb-1">階段 3~4</span>
+                  <span class="text-xs font-semibold text-slate-200">分鏡與圖像生成</span>
+                  <span class="text-[10px] text-slate-500 block mt-1">Midjourney / Flux / 海報</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
+                  <span class="text-[10px] text-amber-400 font-bold block mb-1">階段 5</span>
+                  <span class="text-xs font-semibold text-slate-200">圖生動態影片</span>
+                  <span class="text-[10px] text-slate-500 block mt-1">Kling / Runway / Luma</span>
+                </div>
+                <div class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
+                  <span class="text-[10px] text-rose-400 font-bold block mb-1">階段 6~7</span>
+                  <span class="text-xs font-semibold text-slate-200">音樂音效與剪輯</span>
+                  <span class="text-[10px] text-slate-500 block mt-1">Suno + 剪映/CapCut</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Step Navigation Buttons (Prev / Next) -->
+      <div class="mt-8 pt-6 border-t border-slate-800 flex items-center justify-between">
+        <button id="btn-prev-step" onclick="prevStep()" class="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-semibold transition flex items-center space-x-2">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>上一步驟</span>
+        </button>
+
+        <div class="flex items-center space-x-2">
+          <span class="text-xs text-slate-400">目前步驟：</span>
+          <span id="current-step-indicator" class="text-xs font-bold text-indigo-400">階段 1 / 7</span>
+        </div>
+
+        <button id="btn-next-step" onclick="nextStep()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/30 transition flex items-center space-x-2">
+          <span>下一步驟</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div><!-- END VIEW MODE 1 -->
+
+
+    <!-- ========================================== -->
+    <!-- VIEW MODE 2: PROMPT CHEAT SHEET LIBRARY    -->
+    <!-- ========================================== -->
+    <div id="view-prompts-container" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+          <div>
+            <h2 class="text-2xl font-black text-white flex items-center space-x-2.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i>
+              <span>重要提示詞庫大全 (講師課堂示範架構)</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">完整保留講師五大提示詞架構，支援自訂變數替換與一鍵複製。</p>
+          </div>
+          <button onclick="copyAllPrompts()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center space-x-1.5 self-start sm:self-auto">
+            <i class="fa-regular fa-copy"></i>
+            <span>複製全套提示詞包</span>
+          </button>
+        </div>
+
+        <!-- 5 Prompt Cards in Grid -->
+        <div class="grid grid-cols-1 gap-6">
+
+          <!-- Card 1 -->
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-indigo-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-indigo-600/20 text-indigo-400 flex items-center justify-center text-xs font-bold">1</span>
+                <h3 class="text-sm font-bold text-white">劇情發想提示詞</h3>
+              </div>
+              <button onclick="copyToClipboard('lib-prompt-1', this)" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs transition flex items-center space-x-1">
+                <i class="fa-regular fa-clipboard"></i>
+                <span>複製</span>
+              </button>
+            </div>
+            <pre id="lib-prompt-1" class="font-mono text-xs text-indigo-200 bg-slate-900/60 p-4 rounded-lg whitespace-pre-wrap leading-relaxed select-all">我正在構思一段【30】秒左右的影片，
+請以下面的框架為我建議【三個溫馨感人】
+的【新海誠風格】的【動漫】影片方案內容，
+不需有腳本。
+
+1. 角色：【少年】；另一位主角是【老拉布拉多】。
+2. 劇情大綱：請您建議。
+3. 劇情要點：請您建議。
+4. 場景：請您建議，其中要有草原的場景。
+5. 風格：請您建議。</pre>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-sky-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-sky-600/20 text-sky-400 flex items-center justify-center text-xs font-bold">2</span>
+                <h3 class="text-sm font-bold text-white">分鏡設計提示詞</h3>
+              </div>
+              <button onclick="copyToClipboard('lib-prompt-2', this)" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs transition flex items-center space-x-1">
+                <i class="fa-regular fa-clipboard"></i>
+                <span>複製</span>
+              </button>
+            </div>
+            <pre id="lib-prompt-2" class="font-mono text-xs text-sky-200 bg-slate-900/60 p-4 rounded-lg whitespace-pre-wrap leading-relaxed select-all">請根據您上面建議的【方案X：XX】
+劇情內容與風格，為我分段為【X】段鏡頭。
+
+我需要您提供以下內容：
+
+1. 中文標題（精簡）。
+
+2. 場景設計與分鏡描述文案：
+   - 分鏡編號與類型（例如：01 遠景）
+   - 分鏡畫面內容描述
+   - 分鏡影片的字幕或台詞
+   - 時長
+
+3. 所有鏡頭的 AI 圖像生成提示詞：
+   提供中文與英文對照版本。
+
+4. 所有鏡頭的 AI 影片生成提示詞：
+   提供中文與英文對照版本。</pre>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-purple-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-purple-600/20 text-purple-400 flex items-center justify-center text-xs font-bold">3</span>
+                <h3 class="text-sm font-bold text-white">角色設定表 Character Sheet</h3>
+              </div>
+              <button onclick="copyToClipboard('lib-prompt-3', this)" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs transition flex items-center space-x-1">
+                <i class="fa-regular fa-clipboard"></i>
+                <span>複製</span>
+              </button>
+            </div>
+            <pre id="lib-prompt-3" class="font-mono text-xs text-purple-200 bg-slate-900/60 p-4 rounded-lg whitespace-pre-wrap leading-relaxed select-all">1. 請根據您建議的內容，
+   生成【角色1】的【真人或動漫】角色設定表
+   （Character Sheet）。
+
+2. 包含上述角色的四個全身視角：
+   正面、45度側面、側面，以及背面。
+
+3. 保持原角色面部特徵不變。
+
+4. 白色背景，均勻光線，16:9。</pre>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-emerald-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-xs font-bold">4</span>
+                <h3 class="text-sm font-bold text-white">影片片頭海報提示詞</h3>
+              </div>
+              <button onclick="copyToClipboard('lib-prompt-4', this)" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs transition flex items-center space-x-1">
+                <i class="fa-regular fa-clipboard"></i>
+                <span>複製</span>
+              </button>
+            </div>
+            <pre id="lib-prompt-4" class="font-mono text-xs text-emerald-200 bg-slate-900/60 p-4 rounded-lg whitespace-pre-wrap leading-relaxed select-all">請為我生成這部影片的開始片頭海報圖【9:16或16:9】，
+符合您建議的劇情風格。
+
+1. 場景與人物要極度真實感或符合建議風格。
+2. 請以上傳圖片1為角色1的樣貌。
+3. 請以上傳圖片2為角色2的樣貌。
+4. 要有中文標題文字，中文標題：【XX】。
+5. 除了中文標題以外，海報圖片中不要有其他文字。</pre>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-rose-500/50 transition">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-rose-600/20 text-rose-400 flex items-center justify-center text-xs font-bold">5</span>
+                <h3 class="text-sm font-bold text-white">AI 背景配樂提示詞</h3>
+              </div>
+              <button onclick="copyToClipboard('lib-prompt-5', this)" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs transition flex items-center space-x-1">
+                <i class="fa-regular fa-clipboard"></i>
+                <span>複製</span>
+              </button>
+            </div>
+            <pre id="lib-prompt-5" class="font-mono text-xs text-rose-200 bg-slate-900/60 p-4 rounded-lg whitespace-pre-wrap leading-relaxed select-all">請為我提供符合下面劇情的影片配樂，
+時長為【XX】秒，無人聲。
+
+影片名稱：【XXXX】
+
+劇情大綱：【XXXX】
+
+影片風格：【XXXX】</pre>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- END VIEW MODE 2 -->
+
+
+    <!-- ========================================== -->
+    <!-- VIEW MODE 3: STORYBOARD STUDIO             -->
+    <!-- ========================================== -->
+    <div id="view-storyboard-container" class="hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+          <div>
+            <h2 class="text-2xl font-black text-white flex items-center space-x-2.5">
+              <i class="fa-solid fa-table-cells text-sky-400"></i>
+              <span>互動式分鏡工作台 (Storyboard Studio)</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">
+              鏡頭分鏡管理、時長統計、提示詞對應與完成狀態追蹤。
+            </p>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <button onclick="addStoryboardRow()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-bold transition flex items-center space-x-1">
+              <i class="fa-solid fa-plus"></i>
+              <span>新增鏡頭</span>
+            </button>
+            <button onclick="resetStoryboardDemo()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs transition">
+              重設範例鏡頭
+            </button>
+          </div>
+        </div>
+
+        <!-- Storyboard Duration & Status Bar -->
+        <div class="flex items-center justify-between bg-slate-950 p-3.5 rounded-xl border border-slate-800 mb-4 text-xs">
+          <div class="flex items-center space-x-4">
+            <span class="text-slate-400">總鏡頭數：<strong id="sb-total-shots" class="text-white">6</strong> 個</span>
+            <span class="text-slate-400">累計預估總時長：<strong id="sb-total-seconds" class="text-sky-400">30</strong> 秒</span>
+          </div>
+          <div class="text-slate-400">
+            鏡頭完成進度：<strong id="sb-completion-rate" class="text-emerald-400">0%</strong>
+          </div>
+        </div>
+
+        <!-- Storyboard Table -->
+        <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-950">
+          <table class="w-full text-left text-xs text-slate-300 divide-y divide-slate-800">
+            <thead class="bg-slate-900/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              <tr>
+                <th class="p-3 w-12 text-center">狀態</th>
+                <th class="p-3 w-16">鏡頭</th>
+                <th class="p-3 w-28">景別/運鏡</th>
+                <th class="p-3">畫面內容描述 (Prompt)</th>
+                <th class="p-3 w-48">台詞 / 字幕</th>
+                <th class="p-3 w-20 text-center">秒數</th>
+                <th class="p-3 w-12 text-center">操作</th>
+              </tr>
+            </thead>
+            <tbody id="storyboard-tbody" class="divide-y divide-slate-800/60 font-sans">
+              <!-- Dynamically rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- END VIEW MODE 3 -->
+
+  </main>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- EXPORT PROJECT MODAL DIALOG -->
+  <div id="export-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+          <i class="fa-solid fa-file-arrow-down text-indigo-400"></i>
+          <span>匯出 AI 影片創作全套專案筆記</span>
+        </h3>
+        <button onclick="closeExportModal()" class="text-slate-400 hover:text-white p-1 text-base">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-400 mb-4">包含 7 個步驟進度、5 大自訂提示詞內容與完整分鏡腳本：</p>
+
+      <textarea id="export-modal-textarea" readonly rows="12" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono text-xs text-slate-200 select-all focus:outline-none leading-relaxed mb-4"></textarea>
+
+      <div class="flex items-center justify-between">
+        <div class="text-[11px] text-slate-500">支援 Markdown 格式，可直接貼至 Notion、筆記軟體。</div>
+        <div class="flex items-center space-x-2">
+          <button onclick="copyExportText(this)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-lg transition flex items-center space-x-1.5">
+            <i class="fa-regular fa-clipboard"></i>
+            <span>複製全篇 Markdown</span>
+          </button>
+          <button onclick="downloadMarkdownFile()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-lg transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-download"></i>
+            <span>下載 .md 檔案</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>AI 短片創作七階段互動教學工作台 · 根據講師課堂提示詞架構設計</div>
+      <div class="text-[11px]">支援自動存檔 (LocalStorage) · 隨開隨用</div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
